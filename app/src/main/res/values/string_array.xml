@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pizzaName">
+        <item> Pomidory </item>
+        <item> Ziemniaki </item>
+        <item> Marchew </item>
+        <item> Buraki </item>
+        <item> Pietruszka </item>
+        <item> Cebula </item>
+        <item> Czosnek </item>
+        <item> Pomidory </item>
+        <item> Ziemniaki </item>
+        <item> Marchew </item>
+        <item> Buraki </item>
+        <item> Pietruszka </item>
+        <item> Cebula </item>
+        <item> Czosnek </item>
+    </string-array>
+
+    <array name="pizzaImage">
+        <item> @drawable/apple</item>
+        <item> @drawable/banana</item>
+        <item> @drawable/cherry</item>
+        <item> @drawable/grape</item>
+        <item> @drawable/kiwifruit</item>
+        <item> @drawable/orange</item>
+        <item> @drawable/pear</item>
+        <item> @drawable/apple</item>
+        <item> @drawable/banana</item>
+        <item> @drawable/cherry</item>
+        <item> @drawable/grape</item>
+        <item> @drawable/kiwifruit</item>
+        <item> @drawable/orange</item>
+        <item> @drawable/pear</item>
+    </array>
+
+    <string-array name="pizzaDescription">
+        <item> JabłkoJabłkoJabłko JabłkoJabłko Jabłko</item>
+        <item> Banan BananBananBanan Banan Banan</item>
+        <item> Wiśnie WiśnieWiśnieWiśnie  Wiśnie "</item>
+        <item> WinogronaWinogronaWinogronaWinogrona Winogrona</item>
+        <item> KiwiKiwiKiwiKiwi KiwiKiwiKiwi KiwiKiwi</item>
+        <item> PomarańczePomarańczePomarańcze PomarańczePomarańcze</item>
+        <item> GruszkaGruszka GruszkaGruszka GruszkaGruszka</item>
+        <item> JabłkoJabłkoJabłko JabłkoJabłko Jabłko</item>
+        <item> Banan BananBananBanan Banan Banan</item>
+        <item> Wiśnie WiśnieWiśnieWiśnie  Wiśnie "</item>
+        <item> WinogronaWinogronaWinogronaWinogrona Winogrona</item>
+        <item> KiwiKiwiKiwiKiwi KiwiKiwiKiwi KiwiKiwi</item>
+        <item> PomarańczePomarańczePomarańcze PomarańczePomarańcze</item>
+        <item> GruszkaGruszka GruszkaGruszka GruszkaGruszka</item>
+    </string-array>
+
+</resources>
