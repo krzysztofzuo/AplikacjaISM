@@ -7,7 +7,7 @@ import android.arch.persistence.room.PrimaryKey;
 @Entity
 public class Pizza {
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private int id = 0;
 
     @ColumnInfo(name = "pizzaName")
     private String pizzaName;

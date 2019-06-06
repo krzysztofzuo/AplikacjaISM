@@ -1,6 +1,10 @@
 package com.example.aplikacjaism;
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -15,6 +19,11 @@ import android.widget.Toast;
 
 import com.example.aplikacjaism.database.AppDatabase;
 import com.example.aplikacjaism.database.Pizza;
+import com.example.aplikacjaism.database.PizzaDao;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class AddPizzaActivity extends AppCompatActivity {
     static final int PICK_IMAGE = 1;
@@ -50,13 +59,17 @@ public class AddPizzaActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     Pizza pizza = new Pizza();
-                    pizza.setPizzaImage(cos.toString());
+                    Bitmap bitmap = Bitmap.createScaledBitmap(((BitmapDrawable) newPizzaImage.getDrawable()).getBitmap(), 300, 300, true);
+                    pizza.setPizzaImage(saveToInternalStorage(bitmap, String.valueOf(appDatabase.pizzaDao().size()+1)));
                     pizza.setPizzaName(newPizzaName.getText().toString());
                     pizza.setPizzaDescription(newPizzaDescription.getText().toString());
                     appDatabase.pizzaDao().insert(pizza);
                 } catch (NullPointerException e) {
                     Toast.makeText(AddPizzaActivity.this, "Wypełnij wszystkie pola", Toast.LENGTH_SHORT).show();
                 }
+                Intent intent = new Intent();
+                setResult(RESULT_OK,intent);
+                finish();
             }
         });
     }
@@ -68,5 +81,28 @@ public class AddPizzaActivity extends AppCompatActivity {
             cos = data.getData();
             newPizzaImage.setImageURI(cos);
         }
+    }
+    private String saveToInternalStorage(Bitmap bitmapImage, String id) {
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        // path to /data/data/yourapp/app_data/imageDir
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        // Create imageDir
+        File myPath = new File(directory, id + ".jpg");
+
+        FileOutputStream fileOutputStream = null;
+        try {
+            fileOutputStream = new FileOutputStream(myPath);
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fileOutputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return myPath.getAbsolutePath();
     }
 }

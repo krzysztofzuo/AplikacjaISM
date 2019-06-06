@@ -19,6 +19,13 @@ public interface PizzaDao {
             "pizzaDescription LIKE :last LIMIT 1")
     Pizza findByName(String first, String last);
 
+    @Query("SELECT COUNT(*) FROM Pizza")
+    int size();
+
+    @Query("SELECT * FROM Pizza WHERE id = :getById")
+    Pizza getById(int getById);
+
+
     @Insert
     void insert(Pizza pizza);
 

@@ -1,35 +1,42 @@
 package com.example.aplikacjaism;
 
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.Button;
+import android.widget.Toast;
+
+import com.example.aplikacjaism.database.AppDatabase;
+import com.example.aplikacjaism.database.Pizza;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements przekazable {
     private final int ADD_ACTIVITY = 1;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
+    private AppDatabase appDatabase;
+    List<Pizza> listaElementow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerViewId);
-        recyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(false);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+        appDatabase = AppDatabase.getDatabase(this);
 
-        ArrayList<Model<String, String, Integer>> listaElementow = new ArrayList<>();
-        for (int i = 0; i < MyApp.size; i++) {
-            listaElementow.add(new Model<>(MyApp.pizzaName[i], MyApp.pizzaDescription[i], MyApp.pizzaImage.getResourceId(i, 0)));
-        }
+        listaElementow = appDatabase.pizzaDao().getAll();
 
         mAdapter = new MyAdapter(listaElementow, this);
         recyclerView.setAdapter(mAdapter);
@@ -42,7 +49,16 @@ public class MainActivity extends AppCompatActivity implements przekazable {
                 startActivityForResult(intent, ADD_ACTIVITY);
             }
         });
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == ADD_ACTIVITY){
+            listaElementow.add(appDatabase.pizzaDao().getById(appDatabase.pizzaDao().size()));
+            mAdapter.notifyItemInserted(appDatabase.pizzaDao().size()-1);
+            recyclerView.scrollToPosition(listaElementow.size()-1);
+            Toast.makeText(MainActivity.this,"Dodano nową pizzę",Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

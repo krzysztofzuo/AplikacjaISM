@@ -1,5 +1,10 @@
 package com.example.aplikacjaism;
 
+import android.content.ContentResolver;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,10 +13,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.aplikacjaism.database.Pizza;
+
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
-    ArrayList<Model<String, String, Integer>> listaElementow;
+    List<Pizza> listaElementow;
     final przekazable getPosition;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -28,7 +37,7 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         }
     }
 
-    public MyAdapter(ArrayList<Model<String, String, Integer>> listaElementow, przekazable getPosition) {
+    public MyAdapter(List<Pizza> listaElementow, przekazable getPosition) {
         this.getPosition = getPosition;
         this.listaElementow = listaElementow;
     }
@@ -50,8 +59,9 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             }
         });
 
-        holder.pizzaName.setText(listaElementow.get(position).pizzaName);
-        holder.pizzaImage.setImageResource(listaElementow.get(position).pizzaImage);
+
+        holder.pizzaName.setText(listaElementow.get(position).getPizzaName());
+        holder.pizzaImage.setImageURI(Uri.parse(listaElementow.get(position).getPizzaImage()));
     }
 
     @Override
