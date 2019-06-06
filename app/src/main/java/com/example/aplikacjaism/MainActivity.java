@@ -1,15 +1,18 @@
 package com.example.aplikacjaism;
 
+import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.Button;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements przekazable {
+    private final int ADD_ACTIVITY = 1;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -28,8 +31,24 @@ public class MainActivity extends AppCompatActivity {
             listaElementow.add(new Model<>(MyApp.pizzaName[i], MyApp.pizzaDescription[i], MyApp.pizzaImage.getResourceId(i, 0)));
         }
 
-        mAdapter = new MyAdapter(listaElementow);
+        mAdapter = new MyAdapter(listaElementow, this);
         recyclerView.setAdapter(mAdapter);
 
+        FloatingActionButton addButton = findViewById(R.id.goToAddActivityButton);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AddPizzaActivity.class);
+                startActivityForResult(intent, ADD_ACTIVITY);
+            }
+        });
+
+    }
+
+    @Override
+    public void getPosition(int idOfRow) {
+        Intent intent = new Intent(this, Description.class);
+        intent.putExtra("id", idOfRow);
+        startActivity(intent);
     }
 }

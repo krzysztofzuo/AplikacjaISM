@@ -1,23 +1,24 @@
 package com.example.aplikacjaism;
 
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
-    ArrayList<Model<String, String, Integer>> listaElementow = new ArrayList<>();
+    ArrayList<Model<String, String, Integer>> listaElementow;
+    final przekazable getPosition;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView pizzaName;
         public TextView pizzaDescription;
         public ImageView pizzaImage;
+
 
         public MyViewHolder(LinearLayout v) {
             super(v);
@@ -27,11 +28,11 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         }
     }
 
-    public MyAdapter(ArrayList<Model<String, String, Integer>> listaElementow) {
+    public MyAdapter(ArrayList<Model<String, String, Integer>> listaElementow, przekazable getPosition) {
+        this.getPosition = getPosition;
         this.listaElementow = listaElementow;
     }
 
-    //jak ma wygladac pojedynczy row layout
     @Override
     public MyAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LinearLayout v = (LinearLayout) LayoutInflater.from(parent.getContext())
@@ -40,11 +41,16 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         return vh;
     }
 
-    //wypelnienie danymi
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPosition.getPosition(position);
+            }
+        });
+
         holder.pizzaName.setText(listaElementow.get(position).pizzaName);
-        holder.pizzaDescription.setText(listaElementow.get(position).pizzaDescription);
         holder.pizzaImage.setImageResource(listaElementow.get(position).pizzaImage);
     }
 
@@ -52,4 +58,6 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public int getItemCount() {
         return listaElementow.size();
     }
+
+
 }

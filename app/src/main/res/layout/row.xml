@@ -12,22 +12,13 @@
         android:layout_height="match_parent"
         app:srcCompat="@drawable/apple" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/pizzaName"
+        android:layout_width="12dp"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_weight="1"
+        android:text="TextView"
+        android:textSize="24sp" />
 
-        <TextView
-            android:id="@+id/pizzaName"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:text="TextView" />
-
-        <TextView
-            android:id="@+id/pizzaDescription"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="TextView" />
-    </LinearLayout>
 
 </LinearLayout>
