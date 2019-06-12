@@ -8,18 +8,16 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Adapter;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.aplikacjaism.database.AppDatabase;
 import com.example.aplikacjaism.database.Pizza;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements przekazable {
     private final int ADD_ACTIVITY = 1;
+    private final int DELETE_ACTIVITY = 2;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -34,12 +32,6 @@ public class MainActivity extends AppCompatActivity implements przekazable {
         recyclerView.setHasFixedSize(false);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        appDatabase = AppDatabase.getDatabase(this);
-
-        listaElementow = appDatabase.pizzaDao().getAll();
-
-        mAdapter = new MyAdapter(listaElementow, this);
-        recyclerView.setAdapter(mAdapter);
 
         FloatingActionButton addButton = findViewById(R.id.goToAddActivityButton);
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -53,18 +45,31 @@ public class MainActivity extends AppCompatActivity implements przekazable {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == ADD_ACTIVITY){
+        if (requestCode == ADD_ACTIVITY) {
             listaElementow.add(appDatabase.pizzaDao().getById(appDatabase.pizzaDao().size()));
-            mAdapter.notifyItemInserted(appDatabase.pizzaDao().size()-1);
-            recyclerView.scrollToPosition(listaElementow.size()-1);
-            Toast.makeText(MainActivity.this,"Dodano nową pizzę",Toast.LENGTH_SHORT).show();
+            mAdapter.notifyItemInserted(appDatabase.pizzaDao().size() - 1);
+            recyclerView.scrollToPosition(listaElementow.size() - 1);
+        }
+        if (requestCode == DELETE_ACTIVITY) {
         }
     }
 
     @Override
-    public void getPosition(int idOfRow) {
-        Intent intent = new Intent(this, Description.class);
+    public void goToDescription(int idOfRow) {
+        Intent intent = new Intent(this, DetailsActivity.class);
         intent.putExtra("id", idOfRow);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        appDatabase = AppDatabase.getDatabase(this);
+
+        listaElementow = appDatabase.pizzaDao().getAll();
+
+        mAdapter = new MyAdapter(listaElementow, this);
+        recyclerView.setAdapter(mAdapter);
+
     }
 }

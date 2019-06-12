@@ -1,10 +1,6 @@
 package com.example.aplikacjaism;
 
-import android.content.ContentResolver;
-import android.content.Context;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +11,6 @@ import android.widget.TextView;
 
 import com.example.aplikacjaism.database.Pizza;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
@@ -55,13 +49,11 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getPosition.getPosition(position);
+                getPosition.goToDescription(position);
             }
         });
-
-
-        holder.pizzaName.setText(listaElementow.get(position).getPizzaName());
-        holder.pizzaImage.setImageURI(Uri.parse(listaElementow.get(position).getPizzaImage()));
+            holder.pizzaName.setText(listaElementow.get(position).getPizzaName());
+            holder.pizzaImage.setImageURI(Uri.parse(listaElementow.get(position).getPizzaImage()));
     }
 
     @Override

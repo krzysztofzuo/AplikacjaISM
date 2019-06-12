@@ -9,6 +9,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -24,6 +26,7 @@ import com.example.aplikacjaism.database.PizzaDao;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.invoke.ConstantCallSite;
 
 public class AddPizzaActivity extends AppCompatActivity {
     static final int PICK_IMAGE = 1;
@@ -60,15 +63,16 @@ public class AddPizzaActivity extends AppCompatActivity {
                 try {
                     Pizza pizza = new Pizza();
                     Bitmap bitmap = Bitmap.createScaledBitmap(((BitmapDrawable) newPizzaImage.getDrawable()).getBitmap(), 300, 300, true);
-                    pizza.setPizzaImage(saveToInternalStorage(bitmap, String.valueOf(appDatabase.pizzaDao().size()+1)));
+                    pizza.setPizzaImage(saveToInternalStorage(bitmap, String.valueOf(appDatabase.pizzaDao().size() + 1)));
                     pizza.setPizzaName(newPizzaName.getText().toString());
                     pizza.setPizzaDescription(newPizzaDescription.getText().toString());
                     appDatabase.pizzaDao().insert(pizza);
                 } catch (NullPointerException e) {
                     Toast.makeText(AddPizzaActivity.this, "Wypełnij wszystkie pola", Toast.LENGTH_SHORT).show();
                 }
+                Toast.makeText(AddPizzaActivity.this, "Dodano nową pizzę", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent();
-                setResult(RESULT_OK,intent);
+                setResult(RESULT_OK, intent);
                 finish();
             }
         });
@@ -82,6 +86,7 @@ public class AddPizzaActivity extends AppCompatActivity {
             newPizzaImage.setImageURI(cos);
         }
     }
+
     private String saveToInternalStorage(Bitmap bitmapImage, String id) {
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
         // path to /data/data/yourapp/app_data/imageDir

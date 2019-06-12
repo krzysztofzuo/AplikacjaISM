@@ -1,5 +1,5 @@
 package com.example.aplikacjaism;
 
 public interface przekazable {
-    void getPosition(int idOfRow);
+    void goToDescription(int idOfRow);
 }
