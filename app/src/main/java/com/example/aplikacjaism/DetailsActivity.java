@@ -18,7 +18,7 @@ import com.example.aplikacjaism.database.Pizza;
 import java.util.List;
 
 public class DetailsActivity extends AppCompatActivity {
-    private final int DELETE_ACTIVITY = 2;
+    private final int EDIT_ACTIVITY = 2;
     private ImageView pizzaImage;
     private TextView pizzaName;
     private TextView pizzaDescription;
@@ -33,11 +33,11 @@ public class DetailsActivity extends AppCompatActivity {
         pizzaName = findViewById(R.id.pizzaName);
         pizzaDescription = findViewById(R.id.pizzaDescription);
         appDatabase = AppDatabase.getDatabase(this);
-        Button editButton = findViewById(R.id.deleteButton);
+        Button editButton = findViewById(R.id.editButton);
         Button deleteButton = findViewById(R.id.deleteButton);
 
         listaElementow = appDatabase.pizzaDao().getAll();
-        int id = getIntent().getIntExtra("id", 0);
+        final int id = getIntent().getIntExtra("id", 0);
 
         final Pizza pizza = listaElementow.get(id);
         pizzaDescription.setText(pizza.getPizzaDescription());
@@ -52,8 +52,17 @@ public class DetailsActivity extends AppCompatActivity {
                 //startActivityForResult(intent, DELETE_ACTIVITY);
                 Toast.makeText(DetailsActivity.this, "Usunięto pizzę", Toast.LENGTH_LONG).show();
                 //startActivity(intent);
-                setResult(RESULT_OK,intent);
+                setResult(RESULT_OK, intent);
                 finish();
+            }
+        });
+
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DetailsActivity.this, EditPizzaActivity.class);
+                intent.putExtra("id", id);
+                startActivityForResult(intent, EDIT_ACTIVITY);
             }
         });
 

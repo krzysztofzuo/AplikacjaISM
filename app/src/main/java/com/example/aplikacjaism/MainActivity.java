@@ -1,5 +1,6 @@
 package com.example.aplikacjaism;
 
+import android.app.ListActivity;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -17,7 +18,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements przekazable {
     private final int ADD_ACTIVITY = 1;
-    private final int DELETE_ACTIVITY = 2;
+    private final int EDIT_ACTIVITY = 2;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -50,7 +51,13 @@ public class MainActivity extends AppCompatActivity implements przekazable {
             mAdapter.notifyItemInserted(appDatabase.pizzaDao().size() - 1);
             recyclerView.scrollToPosition(listaElementow.size() - 1);
         }
-        if (requestCode == DELETE_ACTIVITY) {
+        if (requestCode == EDIT_ACTIVITY) {
+            appDatabase = AppDatabase.getDatabase(this);
+
+            listaElementow = appDatabase.pizzaDao().getAll();
+
+            mAdapter = new MyAdapter(listaElementow, this);
+            recyclerView.setAdapter(mAdapter);
         }
     }
 

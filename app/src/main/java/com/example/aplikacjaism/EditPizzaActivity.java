@@ -21,9 +21,11 @@ import com.example.aplikacjaism.database.Pizza;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
-public class AddPizzaActivity extends AppCompatActivity {
+public class EditPizzaActivity extends AppCompatActivity {
     static final int PICK_IMAGE = 1;
+    private final int EDIT_ACTIVITY_RESULT = 2;
     private ImageView newPizzaImage;
     private TextView newPizzaName;
     private TextView newPizzaDescription;
@@ -31,6 +33,7 @@ public class AddPizzaActivity extends AppCompatActivity {
     private AppDatabase appDatabase;
     private TextView addpizzaText;
     Uri cos;
+    private List<Pizza> listaElementow;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,8 +45,15 @@ public class AddPizzaActivity extends AppCompatActivity {
         addPizzaButton = findViewById(R.id.addPizzaButton);
         appDatabase = AppDatabase.getDatabase(this);
         addpizzaText = findViewById(R.id.addPizzaText);
-        addpizzaText.setText("Dodaj nową pizzę");
+        addpizzaText.setText("Edytuj pizzę");
 
+        listaElementow = appDatabase.pizzaDao().getAll();
+        int id = getIntent().getIntExtra("id", 0);
+
+        final Pizza pizza = listaElementow.get(id);
+        newPizzaName.setText(pizza.getPizzaName());
+        newPizzaDescription.setText(pizza.getPizzaDescription());
+        newPizzaImage.setImageURI(Uri.parse(pizza.getPizzaImage()));
         newPizzaImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,19 +68,18 @@ public class AddPizzaActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    Pizza pizza = new Pizza();
                     Bitmap bitmap = Bitmap.createScaledBitmap(((BitmapDrawable) newPizzaImage.getDrawable()).getBitmap(), 300, 300, true);
                     pizza.setPizzaImage(saveToInternalStorage(bitmap, String.valueOf(appDatabase.pizzaDao().size() + 1)));
                     pizza.setPizzaName(newPizzaName.getText().toString());
                     pizza.setPizzaDescription(newPizzaDescription.getText().toString());
-                    appDatabase.pizzaDao().insert(pizza);
+                    appDatabase.pizzaDao().update(pizza);
                 } catch (NullPointerException e) {
-                    Toast.makeText(AddPizzaActivity.this, "Wypełnij wszystkie pola", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditPizzaActivity.this, "Wypełnij wszystkie pola", Toast.LENGTH_SHORT).show();
                 }
-                Toast.makeText(AddPizzaActivity.this, "Dodano nową pizzę", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent();
-                setResult(RESULT_OK, intent);
-                finish();
+                Toast.makeText(EditPizzaActivity.this, "Edytowano pizzę", Toast.LENGTH_SHORT).show();
+                appDatabase.pizzaDao().update(pizza);
+                Intent intent = new Intent(EditPizzaActivity.this, MainActivity.class);
+                startActivityForResult(intent, EDIT_ACTIVITY_RESULT);
             }
         });
     }

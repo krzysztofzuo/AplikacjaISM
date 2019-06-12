@@ -52,8 +52,8 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                 getPosition.goToDescription(position);
             }
         });
-            holder.pizzaName.setText(listaElementow.get(position).getPizzaName());
-            holder.pizzaImage.setImageURI(Uri.parse(listaElementow.get(position).getPizzaImage()));
+        holder.pizzaName.setText(listaElementow.get(position).getPizzaName());
+        holder.pizzaImage.setImageURI(Uri.parse(listaElementow.get(position).getPizzaImage()));
     }
 
     @Override
