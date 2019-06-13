@@ -16,7 +16,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements przekazable {
     private final int ADD_ACTIVITY = 1;
-    private final int EDIT_ACTIVITY = 2;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -48,14 +47,6 @@ public class MainActivity extends AppCompatActivity implements przekazable {
             listaElementow.add(appDatabase.pizzaDao().getById(appDatabase.pizzaDao().size()));
             mAdapter.notifyItemInserted(appDatabase.pizzaDao().size() - 1);
             recyclerView.scrollToPosition(listaElementow.size() - 1);
-        }
-        if (requestCode == EDIT_ACTIVITY) {
-            appDatabase = AppDatabase.getDatabase(this);
-
-            listaElementow = appDatabase.pizzaDao().getAll();
-
-            mAdapter = new MyAdapter(listaElementow, this);
-            recyclerView.setAdapter(mAdapter);
         }
     }
 

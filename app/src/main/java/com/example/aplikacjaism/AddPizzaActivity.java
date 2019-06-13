@@ -54,27 +54,24 @@ public class AddPizzaActivity extends AppCompatActivity {
             }
         });
 
-        addPizzaButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    Pizza pizza = new Pizza();
-                    Bitmap bitmap = Bitmap.createScaledBitmap(((BitmapDrawable) newPizzaImage.getDrawable()).getBitmap(), 300, 300, true);
-                    pizza.setPizzaImage(saveToInternalStorage(bitmap, String.valueOf(appDatabase.pizzaDao().size() + 1)));
-                    pizza.setPizzaName(newPizzaName.getText().toString());
-                    pizza.setPizzaDescription(newPizzaDescription.getText().toString());
-                    appDatabase.pizzaDao().insert(pizza);
-                } catch (NullPointerException e) {
-                    Toast.makeText(AddPizzaActivity.this, "Wypełnij wszystkie pola", Toast.LENGTH_SHORT).show();
-                }
-                Toast.makeText(AddPizzaActivity.this, "Dodano nową pizzę", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent();
-                setResult(RESULT_OK, intent);
-                finish();
-            }
-        });
-    }
 
+    }
+    public void klik(View v){
+
+        Pizza pizza = new Pizza();
+        try {
+            Bitmap bitmap = Bitmap.createScaledBitmap(((BitmapDrawable) newPizzaImage.getDrawable()).getBitmap(), 300, 300, true);
+            pizza.setPizzaImage(saveToInternalStorage(bitmap, String.valueOf(appDatabase.pizzaDao().size() + 1)));
+            pizza.setPizzaName(newPizzaName.getText().toString());
+            pizza.setPizzaDescription(newPizzaDescription.getText().toString());
+        } catch (NullPointerException e) {
+            Toast.makeText(AddPizzaActivity.this, "Wypełnij wszystkie pola", Toast.LENGTH_SHORT).show();
+        }
+        Toast.makeText(AddPizzaActivity.this, "Dodano nową pizzę", Toast.LENGTH_SHORT).show();
+        appDatabase.pizzaDao().insert(pizza);
+        finish();
+
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

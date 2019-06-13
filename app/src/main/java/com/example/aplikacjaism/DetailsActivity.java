@@ -1,6 +1,5 @@
 package com.example.aplikacjaism;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -49,10 +48,7 @@ public class DetailsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 appDatabase.pizzaDao().delete(pizza);
                 Intent intent = new Intent(DetailsActivity.this, MainActivity.class);
-                //startActivityForResult(intent, DELETE_ACTIVITY);
                 Toast.makeText(DetailsActivity.this, "Usunięto pizzę", Toast.LENGTH_LONG).show();
-                //startActivity(intent);
-                setResult(RESULT_OK, intent);
                 finish();
             }
         });
@@ -67,10 +63,9 @@ public class DetailsActivity extends AppCompatActivity {
         });
     }
 
- //  @Override
- //  protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
- //      super.onActivityResult(requestCode, resultCode, data);
- //      setResult(Activity.RESULT_OK,data);
- //      finish();
- //  }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        finish();
+    }
 }
