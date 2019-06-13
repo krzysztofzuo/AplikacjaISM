@@ -24,12 +24,12 @@ import java.io.IOException;
 
 public class AddPizzaActivity extends AppCompatActivity {
     static final int PICK_IMAGE = 1;
-    private ImageView newPizzaImage;
-    private TextView newPizzaName;
-    private TextView newPizzaDescription;
-    private FloatingActionButton addPizzaButton;
-    private AppDatabase appDatabase;
-    private TextView addpizzaText;
+    protected ImageView newPizzaImage;
+    protected TextView newPizzaName;
+    protected TextView newPizzaDescription;
+    protected FloatingActionButton addPizzaButton;
+    protected AppDatabase appDatabase;
+    protected TextView addpizzaText;
     Uri cos;
 
     @Override
@@ -84,7 +84,7 @@ public class AddPizzaActivity extends AppCompatActivity {
         }
     }
 
-    private String saveToInternalStorage(Bitmap bitmapImage, String id) {
+    protected String saveToInternalStorage(Bitmap bitmapImage, String id) {
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
         // path to /data/data/yourapp/app_data/imageDir
         File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);

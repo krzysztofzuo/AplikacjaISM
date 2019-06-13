@@ -1,6 +1,6 @@
 package com.example.aplikacjaism;
 
-import android.app.Instrumentation;
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -65,9 +65,12 @@ public class DetailsActivity extends AppCompatActivity {
                 startActivityForResult(intent, EDIT_ACTIVITY);
             }
         });
-
-
     }
 
-
+ //  @Override
+ //  protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+ //      super.onActivityResult(requestCode, resultCode, data);
+ //      setResult(Activity.RESULT_OK,data);
+ //      finish();
+ //  }
 }
