@@ -56,7 +56,8 @@ public class AddPizzaActivity extends AppCompatActivity {
 
 
     }
-    public void klik(View v){
+
+    public void klik(View v) {
 
         Pizza pizza = new Pizza();
         try {
@@ -72,6 +73,7 @@ public class AddPizzaActivity extends AppCompatActivity {
         finish();
 
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -87,7 +89,6 @@ public class AddPizzaActivity extends AppCompatActivity {
         File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
         // Create imageDir
         File myPath = new File(directory, id + ".jpg");
-
         FileOutputStream fileOutputStream = null;
         try {
             fileOutputStream = new FileOutputStream(myPath);
