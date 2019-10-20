@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.aplikacjaism.database.AppDatabase;
 import com.example.aplikacjaism.database.Pizza;
 
 import java.util.List;
@@ -21,21 +20,21 @@ public class DetailsActivity extends AppCompatActivity {
     private ImageView pizzaImage;
     private TextView pizzaName;
     private TextView pizzaDescription;
-    private AppDatabase appDatabase;
+//    private AppDatabase appDatabase;
     private List<Pizza> listaElementow;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.details);
-        pizzaImage = findViewById(R.id.pizzaImage);
+ /*       pizzaImage = findViewById(R.id.pizzaImage);
         pizzaName = findViewById(R.id.pizzaName);
         pizzaDescription = findViewById(R.id.pizzaDescription);
         appDatabase = AppDatabase.getDatabase(this);
-        Button editButton = findViewById(R.id.editButton);
+*/        Button editButton = findViewById(R.id.editButton);
         Button deleteButton = findViewById(R.id.deleteButton);
 
-        listaElementow = appDatabase.pizzaDao().getAll();
+ //       listaElementow = appDatabase.pizzaDao().getAll();
         final int id = getIntent().getIntExtra("id", 0);
 
         final Pizza pizza = listaElementow.get(id);
@@ -46,7 +45,7 @@ public class DetailsActivity extends AppCompatActivity {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                appDatabase.pizzaDao().delete(pizza);
+ //               appDatabase.pizzaDao().delete(pizza);
                 Intent intent = new Intent(DetailsActivity.this, MainActivity.class);
                 Toast.makeText(DetailsActivity.this, "Usunięto pizzę", Toast.LENGTH_LONG).show();
                 finish();

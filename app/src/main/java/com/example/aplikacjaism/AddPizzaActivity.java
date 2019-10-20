@@ -1,6 +1,5 @@
 package com.example.aplikacjaism;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -15,21 +14,25 @@ import androidx.annotation.Nullable;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.aplikacjaism.database.AppDatabase;
 import com.example.aplikacjaism.database.Pizza;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.UUID;
 
 public class AddPizzaActivity extends AppCompatActivity {
     static final int PICK_IMAGE = 1;
@@ -37,13 +40,15 @@ public class AddPizzaActivity extends AppCompatActivity {
     protected TextView newPizzaName;
     protected TextView newPizzaDescription;
     protected FloatingActionButton addPizzaButton;
-    protected AppDatabase appDatabase;
+//    protected AppDatabase appDatabase;
     protected TextView addpizzaText;
     Uri cos;
+
     FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myDatabase = database.getReference("test2");
-
-
+    DatabaseReference myDatabase = database.getReference("pizzas/");
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+    //generate UID
+    DatabaseReference newDatabaseReference = myDatabase.child("loccheck").push();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,7 +58,7 @@ public class AddPizzaActivity extends AppCompatActivity {
         newPizzaName = findViewById(R.id.newPizzaName);
         newPizzaDescription = findViewById(R.id.newPizzaDescription);
         addPizzaButton = findViewById(R.id.addPizzaButton);
-        appDatabase = AppDatabase.getDatabase(this);
+//        appDatabase = AppDatabase.getDatabase(this);
         addpizzaText = findViewById(R.id.addPizzaText);
         addpizzaText.setText("Dodaj nową pizzę");
 
@@ -75,55 +80,44 @@ public class AddPizzaActivity extends AppCompatActivity {
 
         Pizza pizza = new Pizza();
         try {
-            Bitmap bitmap = Bitmap.createScaledBitmap(((BitmapDrawable) newPizzaImage.getDrawable()).getBitmap(), 300, 300, true);
-            pizza.setPizzaImage(saveToInternalStorage(bitmap, String.valueOf(appDatabase.pizzaDao().size() + 1)));
+            //Bitmap bitmap = Bitmap.createScaledBitmap(((BitmapDrawable) newPizzaImage.getDrawable()).getBitmap(), 300, 300, true);
+            //pizza.setPizzaImage(saveToInternalStorage(bitmap, String.valueOf(appDatabase.pizzaDao().size() + 1)));
             pizza.setPizzaName(newPizzaName.getText().toString());
             pizza.setPizzaDescription(newPizzaDescription.getText().toString());
+            pizza.setPizzaImage(newDatabaseReference.getKey());
 
 
-            /*
-            //Firebase
-            FirebaseStorage storage;
-            StorageReference storageReference;
-            storage = FirebaseStorage.getInstance();
-            storageReference = storage.getReference();
 
-            private void uploadImage() {
+// Create a storage reference from our app
+            StorageReference storageRef = storage.getReference();
+// Create a reference to "image.jpg"
+            StorageReference imageRef = storageRef.child("zdjecia/" + pizza.getPizzaImage() + ".jpg");
+// Create a reference to 'images/image.jpg'
+            StorageReference mountainImagesRef = storageRef.child("images/zdjecia/" + pizza.getPizzaImage() + ".jpg");
+// While the file names are the same, the references point to different files
+            imageRef.getName().equals(mountainImagesRef.getName());    // true
+            imageRef.getPath().equals(mountainImagesRef.getPath());    // false
+// Get the data from an ImageView as bytes
+            newPizzaImage.setDrawingCacheEnabled(true);
+            newPizzaImage.buildDrawingCache();
+            Bitmap bitmapa = Bitmap.createScaledBitmap(((BitmapDrawable) newPizzaImage.getDrawable()).getBitmap(), 300, 300, true);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmapa.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] data = baos.toByteArray();
 
-                if(filePath != null)
-                {
-                    final ProgressDialog progressDialog = new ProgressDialog(this);
-                    progressDialog.setTitle("Uploading...");
-                    progressDialog.show();
-
-                    StorageReference ref = storageReference.child("images/"+ UUID.randomUUID().toString());
-                    ref.putFile(filePath)
-                            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                @Override
-                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                    progressDialog.dismiss();
-                                    Toast.makeText(AddPizzaActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    progressDialog.dismiss();
-                                    Toast.makeText(AddPizzaActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            })
-                            .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                                @Override
-                                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                                    double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
-                                            .getTotalByteCount());
-                                    progressDialog.setMessage("Uploaded "+(int)progress+"%");
-                                }
-                            });
+            UploadTask uploadTask = imageRef.putBytes(data);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle unsuccessful uploads
                 }
-            }
-*/
-
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                    // ...
+                }
+            });
 
 
 
@@ -131,8 +125,8 @@ public class AddPizzaActivity extends AppCompatActivity {
             Toast.makeText(AddPizzaActivity.this, "Wypełnij wszystkie pola", Toast.LENGTH_SHORT).show();
         }
         Toast.makeText(AddPizzaActivity.this, "Dodano nową pizzę", Toast.LENGTH_SHORT).show();
-        appDatabase.pizzaDao().insert(pizza);
-        myDatabase.setValue(pizza);
+ //       appDatabase.pizzaDao().insert(pizza);
+        myDatabase.child(newDatabaseReference.getKey()).setValue(pizza);
         finish();
 
     }

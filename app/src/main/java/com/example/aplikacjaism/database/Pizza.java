@@ -1,21 +1,9 @@
 package com.example.aplikacjaism.database;
 
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-
-@Entity
 public class Pizza {
-    @PrimaryKey(autoGenerate = true)
     private int id = 0;
-
-    @ColumnInfo(name = "pizzaName")
     private String pizzaName;
-
-    @ColumnInfo(name = "pizzaDescription")
     private String pizzaDescription;
-
-    @ColumnInfo(name = "pizzaImage")
     private String pizzaImage;
 
     public int getId() {
@@ -47,6 +35,17 @@ public class Pizza {
     }
 
     public void setPizzaImage(String pizzaImage) {
+        this.pizzaImage = pizzaImage;
+    }
+
+
+    public Pizza() {
+    }
+
+    public Pizza(int id, String pizzaName, String pizzaDescription, String pizzaImage) {
+        this.id = id;
+        this.pizzaName = pizzaName;
+        this.pizzaDescription = pizzaDescription;
         this.pizzaImage = pizzaImage;
     }
 }

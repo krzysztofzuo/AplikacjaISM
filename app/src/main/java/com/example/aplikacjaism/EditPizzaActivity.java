@@ -22,7 +22,7 @@ public class EditPizzaActivity extends AddPizzaActivity {
         super.onCreate(savedInstanceState);
         addpizzaText.setText("Edytuj pizzę");
 
-        listaElementow = appDatabase.pizzaDao().getAll();
+//        listaElementow = appDatabase.pizzaDao().getAll();
         id = getIntent().getIntExtra("id", 0);
         pizza = listaElementow.get(id);
         newPizzaName.setText(pizza.getPizzaName());
@@ -41,7 +41,7 @@ public class EditPizzaActivity extends AddPizzaActivity {
         }
 
         Toast.makeText(EditPizzaActivity.this, "Edytowano pizzę", Toast.LENGTH_SHORT).show();
-        appDatabase.pizzaDao().update(pizza);
+ //       appDatabase.pizzaDao().update(pizza);
         finish();
     }
 }
