@@ -11,15 +11,14 @@
     android:id="@+id/linearLayout3">
 
 
-    <TextView
+    <ImageView
         android:id="@+id/pizzaImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/apple"
+        android:layout_width="300px"
+        android:layout_height="300px"
         tools:layout_conversion_absoluteHeight="114dp"
-        tools:layout_editor_absoluteY="0dp"
+        tools:layout_conversion_absoluteWidth="114dp"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_conversion_absoluteWidth="114dp"/>
+        tools:layout_editor_absoluteY="0dp" />
 
     <TextView
         android:id="@+id/pizzaName"

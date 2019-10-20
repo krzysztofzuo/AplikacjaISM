@@ -6,13 +6,9 @@ public class Pizza {
     private String pizzaDescription;
     private String pizzaImage;
 
-    public int getId() {
-        return id;
-    }
+    public int getId() { return id; }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public void setId(int id) { this.id = id; }
 
     public String getPizzaName() {
         return pizzaName;
@@ -26,18 +22,13 @@ public class Pizza {
         return pizzaDescription;
     }
 
-    public void setPizzaDescription(String pizzaDescription) {
-        this.pizzaDescription = pizzaDescription;
-    }
+    public void setPizzaDescription(String pizzaDescription) { this.pizzaDescription = pizzaDescription; }
 
-    public String getPizzaImage() {
-        return pizzaImage;
-    }
+    public String getPizzaImage() { return pizzaImage; }
 
     public void setPizzaImage(String pizzaImage) {
         this.pizzaImage = pizzaImage;
     }
-
 
     public Pizza() {
     }

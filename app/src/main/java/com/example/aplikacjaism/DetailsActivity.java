@@ -46,7 +46,7 @@ public class DetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
  //               appDatabase.pizzaDao().delete(pizza);
-                Intent intent = new Intent(DetailsActivity.this, MainActivity.class);
+                Intent intent = new Intent(DetailsActivity.this, ListActivity.class);
                 Toast.makeText(DetailsActivity.this, "Usunięto pizzę", Toast.LENGTH_LONG).show();
                 finish();
             }
