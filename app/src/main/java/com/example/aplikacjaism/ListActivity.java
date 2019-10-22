@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
-import com.example.aplikacjaism.database.Pizza;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -17,13 +16,8 @@ import android.view.View;
 
 import java.util.List;
 
-public class ListActivity extends AppCompatActivity implements przekazable {
+public class ListActivity extends AppCompatActivity {
     private final int ADD_ACTIVITY = 1;
-    //    private RecyclerView recyclerView;
-//    private RecyclerView.Adapter mAdapter;
-//    private RecyclerView.LayoutManager layoutManager;
-//    private AppDatabase appDatabase;
-    List<Pizza> listaElementow;
 
     private RecyclerView mRecyclerView;
     private FirebaseAuth mAuth;
@@ -32,8 +26,8 @@ public class ListActivity extends AppCompatActivity implements przekazable {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_activity);
-        mAuth = FirebaseAuth.getInstance();
 
+        mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
 
         if (user != null) {
@@ -61,11 +55,6 @@ public class ListActivity extends AppCompatActivity implements przekazable {
             });
 
 
-//        recyclerView = (RecyclerView) findViewById(R.id.recyclerViewId);
-//        recyclerView.setHasFixedSize(false);
-//        layoutManager = new LinearLayoutManager(this);
-//        recyclerView.setLayoutManager(layoutManager);
-
             FloatingActionButton addButton = findViewById(R.id.goToAddActivityButton);
             addButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -88,12 +77,6 @@ public class ListActivity extends AppCompatActivity implements przekazable {
         }
     }
 
-    @Override
-    public void goToDescription(int idOfRow) {
-        Intent intent = new Intent(this, DetailsActivity.class);
-        intent.putExtra("id", idOfRow);
-        startActivity(intent);
-    }
 
     @Override
     protected void onResume() {

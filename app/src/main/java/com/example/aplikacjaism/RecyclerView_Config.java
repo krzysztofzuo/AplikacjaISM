@@ -1,16 +1,19 @@
 package com.example.aplikacjaism;
+
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.aplikacjaism.database.Pizza;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -26,17 +29,18 @@ public class RecyclerView_Config {
     // Create a storage reference from our app
     StorageReference storageRef = storage.getReference();
 
-    public void setConfig(RecyclerView recyclerView, Context context, List<Pizza> pizzas, List<String> keys){
+    public void setConfig(RecyclerView recyclerView, Context context, List<Pizza> pizzas, List<String> keys) {
         mContext = context;
         mPizzasAdapter = new PizzasAdapter(pizzas, keys);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(mPizzasAdapter);
     }
 
-    class PizzaItemView extends RecyclerView.ViewHolder{
+    class PizzaItemView extends RecyclerView.ViewHolder {
         private TextView pizzaName;
         private ImageView pizzaImage;
 
+        private String pizzaDescription;
         private String key;
 
         public PizzaItemView(ViewGroup parent) {
@@ -45,16 +49,26 @@ public class RecyclerView_Config {
 
             pizzaName = (TextView) itemView.findViewById(R.id.pizzaName);
             pizzaImage = (ImageView) itemView.findViewById(R.id.pizzaImage);
-        }
-        public void bind(Pizza pizza, String key){
-            pizzaName.setText(pizza.getPizzaName());
 
-            storageRef.child("zdjecia/" + pizza.getPizzaImage() + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, DetailsActivity.class);
+                    intent.putExtra("key", key);
+                    intent.putExtra("pizzaName", pizzaName.getText().toString());
+                    intent.putExtra("pizzaDescription", pizzaDescription);
+                    mContext.startActivity(intent);
+                }
+            });
+        }
+
+        public void bind(Pizza pizza, String key) {
+            pizzaName.setText(pizza.getPizzaName());
+            pizzaDescription = pizza.getPizzaDescription();
+            storageRef.child("zdjecia/" + key + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
-                    Glide.with(mContext)
-                            .load(uri)
-                            .into(pizzaImage);
+                    Glide.with(mContext).load(uri).into(pizzaImage);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -67,7 +81,7 @@ public class RecyclerView_Config {
         }
     }
 
-    class PizzasAdapter extends  RecyclerView.Adapter<PizzaItemView> {
+    class PizzasAdapter extends RecyclerView.Adapter<PizzaItemView> {
         private List<Pizza> mPizzalist;
         private List<String> mKeys;
 

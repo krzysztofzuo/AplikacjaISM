@@ -14,8 +14,7 @@
     <ImageView
         android:id="@+id/pizzaImage"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        app:srcCompat="@drawable/apple" />
+        android:layout_height="200dp" />
 
     <TextView
         android:id="@+id/pizzaName"
