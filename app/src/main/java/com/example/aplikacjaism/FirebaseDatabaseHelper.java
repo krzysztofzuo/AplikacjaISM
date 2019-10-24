@@ -76,14 +76,14 @@ public class FirebaseDatabaseHelper {
 
         // Create a storage reference from our app
         StorageReference storageRef = mStorage.getReference();
-// Create a reference to "image.jpg"
+        // Create a reference to "image.jpg"
         StorageReference pizzasRef = storageRef.child("zdjecia/" + key + ".jpg");
-// Create a reference to 'images/image.jpg'
+        // Create a reference to 'images/image.jpg'
         StorageReference imageRef = storageRef.child("images/zdjecia/" + key + ".jpg");
-// While the file names are the same, the references point to different files
+        // While the file names are the same, the references point to different files
         pizzasRef.getName().equals(imageRef.getName());    // true
         pizzasRef.getPath().equals(imageRef.getPath());    // false
-// Get the data from an ImageView as bytes
+        // Get the data from an ImageView as bytes
         mPizzaImage.setDrawingCacheEnabled(true);
         mPizzaImage.buildDrawingCache();
         Bitmap bitmapa = Bitmap.createScaledBitmap(((BitmapDrawable) mPizzaImage.getDrawable()).getBitmap(), 300, 300, true);
@@ -114,16 +114,17 @@ public class FirebaseDatabaseHelper {
                         dataStatus.DataIsUpdated();
                     }
                 });
+
         // Create a storage reference from our app
         StorageReference storageRef = mStorage.getReference();
-// Create a reference to "image.jpg"
+        // Create a reference to "image.jpg"
         StorageReference pizzasRef = storageRef.child("zdjecia/" + key + ".jpg");
-// Create a reference to 'images/image.jpg'
+        // Create a reference to 'images/image.jpg'
         StorageReference imageRef = storageRef.child("images/zdjecia/" + key + ".jpg");
-// While the file names are the same, the references point to different files
+        // While the file names are the same, the references point to different files
         pizzasRef.getName().equals(imageRef.getName());    // true
         pizzasRef.getPath().equals(imageRef.getPath());    // false
-// Get the data from an ImageView as bytes
+        // Get the data from an ImageView as bytes
         mPizzaImage.setDrawingCacheEnabled(true);
         mPizzaImage.buildDrawingCache();
         Bitmap bitmapa = Bitmap.createScaledBitmap(((BitmapDrawable) mPizzaImage.getDrawable()).getBitmap(), 300, 300, true);
@@ -146,12 +147,28 @@ public class FirebaseDatabaseHelper {
         });
     }
 
-    public void deletePizza(String key, final DataStatus dataStatus) {
+    public void deletePizza(final String key, final DataStatus dataStatus) {
         mReferencePizza.child(key).setValue(null)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         dataStatus.DataIsDeleted();
+                        // Create a storage reference from our app
+                        StorageReference storageRef = mStorage.getReference();
+                        // Create a reference to the file to delete
+                        StorageReference imageRef = storageRef.child("zdjecia/" + key + ".jpg");
+                        // Delete the file
+                        imageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                // File deleted successfully
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                // Uh-oh, an error occurred!
+                            }
+                        });
                     }
                 });
     }
