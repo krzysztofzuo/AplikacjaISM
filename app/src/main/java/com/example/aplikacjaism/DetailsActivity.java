@@ -27,8 +27,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.Console;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class DetailsActivity extends AppCompatActivity {
@@ -93,16 +93,14 @@ public class DetailsActivity extends AppCompatActivity {
             mPizzaDescription = findViewById(R.id.pizzaDescription);
             mPizzaDescription.setText(pizzaDescription);
 
-            final String authKey = user.getUid();
 
             mReferenceUser = mDatabase.getReference("users");
             mReferenceUser.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
-                        String DbKey = keyNode.getKey();
-                        if (DbKey.equals(authKey)) {
-                            admin = keyNode.getValue(Users.class).getAdmin();
+                        if (keyNode.getKey().equals(user.getUid())) {
+                            admin = keyNode.getValue(User.class).getAdmin();
                         }
                     }
                 }
@@ -114,19 +112,11 @@ public class DetailsActivity extends AppCompatActivity {
             });
 
 
-            if (admin) {
-                editButton.setVisibility(View.VISIBLE);
-                deleteButton.setVisibility(View.VISIBLE);
-            }
-
-            editButton = findViewById(R.id.editButton);
             deleteButton = findViewById(R.id.deleteButton);
-            orderButton = findViewById(R.id.orderButton);
-
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new FirebaseDatabaseHelper().deletePizza(key, new FirebaseDatabaseHelper.DataStatus() {
+                    new FirebaseDatabaseHelper().deletePizza(key, new FirebaseDatabaseHelper.DataStatus()  {
                         @Override
                         public void DataIsLoaded(List<Pizza> pizzas, List<String> keys) {
 
@@ -148,10 +138,15 @@ public class DetailsActivity extends AppCompatActivity {
                             finish();
                             return;
                         }
+
+                        @Override
+                        public void DataUsersIsLoaded(List<User> users, List<String> keys) {
+
+                        }
                     });
                 }
             });
-
+            editButton = findViewById(R.id.editButton);
             editButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -164,31 +159,42 @@ public class DetailsActivity extends AppCompatActivity {
 
                 }
             });
-
-            orderButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Pizza pizza = new Pizza();
-
-                    key = getIntent().getStringExtra("key");
-                    pizzaName = getIntent().getStringExtra("pizzaName");
-                    pizzaDescription = getIntent().getStringExtra("pizzaDescription");
-
-                    pizza.setPizzaName(pizzaName);
-                    pizza.setPizzaDescription(pizzaDescription);
-
-                    mReferenceOrder = mDatabase.getReference("orders");
-                    String key = mReferenceOrder.push().getKey();
-                    mReferenceOrder.child(key).setValue(pizza);
-
-                    Toast.makeText(DetailsActivity.this, "Zamówiono pizzę!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(DetailsActivity.this, ListActivity.class);
-                    startActivity(intent);
-                    finish();
-                    return;
-                }
-            });
         }
+
+
+        if (admin) {
+            editButton.setEnabled(false);
+            deleteButton.setEnabled(false);
+        }
+
+        orderButton = findViewById(R.id.orderButton);
+        orderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Pizza pizza = new Pizza();
+                Order order = new Order();
+
+                key = getIntent().getStringExtra("key");
+                pizzaName = getIntent().getStringExtra("pizzaName");
+                pizzaDescription = getIntent().getStringExtra("pizzaDescription");
+
+                pizza.setPizzaName(pizzaName);
+                pizza.setPizzaDescription(pizzaDescription);
+                order.setPizza(pizza);
+                order.setDate(new Date());
+
+                mReferenceOrder = mDatabase.getReference("orders");
+                String key = mReferenceOrder.push().getKey();
+
+                mReferenceOrder.child(key).setValue(order);
+
+                Toast.makeText(DetailsActivity.this, "Zamówiono pizzę!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(DetailsActivity.this, ListActivity.class);
+                startActivity(intent);
+                finish();
+                return;
+            }
+        });
     }
 
     @Override

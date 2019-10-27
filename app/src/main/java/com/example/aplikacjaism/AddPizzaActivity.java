@@ -85,6 +85,11 @@ public class AddPizzaActivity extends AppCompatActivity {
                     public void DataIsDeleted() {
 
                     }
+
+                    @Override
+                    public void DataUsersIsLoaded(List<User> users, List<String> keys) {
+
+                    }
                 });
             }
         });

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Aplikacja Pizza</string>
+    <string name="title_activity_user_list">UserListActivity</string>
 </resources>

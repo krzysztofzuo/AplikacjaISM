@@ -3,8 +3,6 @@ package com.example.aplikacjaism;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -13,12 +11,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.View;
+import android.widget.Button;
 
 import java.util.List;
 
 public class ListActivity extends AppCompatActivity {
-    private final int ADD_ACTIVITY = 1;
-
     private RecyclerView mRecyclerView;
     private FirebaseAuth mAuth;
 
@@ -52,6 +49,11 @@ public class ListActivity extends AppCompatActivity {
                 public void DataIsDeleted() {
 
                 }
+
+                @Override
+                public void DataUsersIsLoaded(List<User> users, List<String> keys) {
+
+                }
             });
 
 
@@ -60,22 +62,24 @@ public class ListActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(ListActivity.this, AddPizzaActivity.class);
-                    startActivityForResult(intent, ADD_ACTIVITY);
+                    startActivity(intent);
                 }
             });
+
+            Button usersButton = findViewById(R.id.usersButton);
+            usersButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(ListActivity.this, UserListActivity.class);
+                    startActivity(intent);
+                }
+            });
+
 
         } else {
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == ADD_ACTIVITY) {
-//            listaElementow.add(appDatabase.pizzaDao().getById(appDatabase.pizzaDao().size()));
-//            mAdapter.notifyItemInserted(appDatabase.pizzaDao().size() - 1);
-//            recyclerView.scrollToPosition(listaElementow.size() - 1);
-        }
-    }
 
 
     @Override

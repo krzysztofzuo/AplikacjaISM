@@ -87,10 +87,11 @@ public class SignInActivity extends AppCompatActivity {
                         .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                             @Override
                             public void onSuccess(AuthResult authResult) {
-                                Users user = new Users();
+                                User user = new User();
 
                                 String uid = mAuth.getUid();
                                 user.setAdmin(false);
+                                user.setEmail(mEmail.getText().toString());
                                 mUsers.child(uid).setValue(user);
 
                                 Toast.makeText(SignInActivity.this, "Zarejestrowano!", Toast.LENGTH_LONG).show();
