@@ -2,6 +2,7 @@ package com.example.aplikacjaism.userpackage;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -12,12 +13,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.aplikacjaism.R;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
 public class RecyclerViewUser {
     private Context mContext;
     private UsersAdapter mUsersAdapter;
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference mReferenceUser;
+
 
     public void setConfig(RecyclerView recyclerView, Context context, List<User> users, List<String> keys) {
         mContext = context;
@@ -39,6 +45,20 @@ public class RecyclerViewUser {
             mUserId = (TextView) itemView.findViewById(R.id.userId);
             mUserAdmin = (CheckBox) itemView.findViewById(R.id.adminCheckBox);
 
+
+            mUserAdmin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    User user = new User();
+                    user.setEmail(mUserEmail.getText().toString());
+                    user.setAdmin(mUserAdmin.isChecked());
+
+                    mDatabase = FirebaseDatabase.getInstance();
+                    mReferenceUser = mDatabase.getReference("users");
+
+                    mReferenceUser.child(mUserId.getText().toString()).setValue(user);
+                }
+            });
         }
 
         public void bind(User user, String key) {

@@ -170,7 +170,7 @@ public class FirebaseDatabaseHelper {
                 });
     }
 
-    public void readUser(final DataStatus dataStatus){
+    public void readUser(final DataStatus dataStatus) {
         mReferenceUser.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -190,5 +190,4 @@ public class FirebaseDatabaseHelper {
             }
         });
     }
-
 }

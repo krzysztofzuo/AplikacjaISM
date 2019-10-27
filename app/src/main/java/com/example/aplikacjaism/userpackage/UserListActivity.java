@@ -18,7 +18,6 @@ public class UserListActivity extends AppCompatActivity {
     private RecyclerView mRecyclerViewList;
     private FirebaseAuth mAuth;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,9 +54,6 @@ public class UserListActivity extends AppCompatActivity {
                     new RecyclerViewUser().setConfig(mRecyclerViewList, UserListActivity.this, users, keys);
                 }
             });
-
-
-
         }
     }
 

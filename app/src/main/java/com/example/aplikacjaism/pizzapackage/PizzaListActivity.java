@@ -81,19 +81,13 @@ public class PizzaListActivity extends AppCompatActivity {
             });
 
 
-        } else {
         }
     }
-
 
 
     @Override
     protected void onResume() {
         super.onResume();
-//        appDatabase = AppDatabase.getDatabase(this);
-//        listaElementow = appDatabase.pizzaDao().getAll();
-//        mAdapter = new MyAdapter(listaElementow, this);
-//        recyclerView.setAdapter(mAdapter);
 
     }
 }

@@ -106,6 +106,7 @@ public class DetailsActivity extends AppCompatActivity {
                     for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
                         if (keyNode.getKey().equals(user.getUid())) {
                             admin = keyNode.getValue(User.class).getAdmin();
+                            // TODO: 2019-10-28 ustawic widocznosc pól
                         }
                     }
                 }

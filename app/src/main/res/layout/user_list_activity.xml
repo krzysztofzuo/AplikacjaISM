@@ -6,16 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".userpackage.UserListActivity">
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="Zapisz"
-        app:layout_constraintBottom_toBottomOf="@+id/recyclerUserViewId"
-        app:layout_constraintEnd_toEndOf="@+id/recyclerUserViewId" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerUserViewId"
         android:layout_width="0dp"
