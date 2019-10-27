@@ -16,8 +16,12 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SignInActivity extends AppCompatActivity {
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference mUsers;
 
     private EditText mEmail;
     private EditText mPassword;
@@ -36,6 +40,9 @@ public class SignInActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+        mDatabase = FirebaseDatabase.getInstance();
+        mUsers = mDatabase.getReference("users");
+
         mEmail = (EditText) findViewById(R.id.email);
         mPassword = (EditText) findViewById(R.id.password);
 
@@ -53,6 +60,7 @@ public class SignInActivity extends AppCompatActivity {
                         .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                             @Override
                             public void onSuccess(AuthResult authResult) {
+
                                 Toast.makeText(SignInActivity.this, "Zalogowano!", Toast.LENGTH_LONG).show();
                                 Intent intent = new Intent(SignInActivity.this, ListActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -79,6 +87,12 @@ public class SignInActivity extends AppCompatActivity {
                         .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                             @Override
                             public void onSuccess(AuthResult authResult) {
+                                Users user = new Users();
+
+                                String uid = mAuth.getUid();
+                                user.setAdmin(false);
+                                mUsers.child(uid).setValue(user);
+
                                 Toast.makeText(SignInActivity.this, "Zarejestrowano!", Toast.LENGTH_LONG).show();
                                 inProgress(false);
                             }

@@ -19,14 +19,28 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.Console;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DetailsActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference mUser;
+    private DatabaseReference mReferenceOrder;
+    private DatabaseReference mReferenceUser;
+    private List<Pizza> users = new ArrayList<>();
+
+    Boolean admin = false;
 
     private ImageView mPizzaImage;
     private TextView mPizzaName;
@@ -34,6 +48,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     private Button editButton;
     private Button deleteButton;
+    private Button orderButton;
 
     private String key;
     private String pizzaName;
@@ -49,7 +64,10 @@ public class DetailsActivity extends AppCompatActivity {
         setContentView(R.layout.details);
 
         mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
+        final FirebaseUser user = mAuth.getCurrentUser();
+
+        mDatabase = FirebaseDatabase.getInstance();
+        mUser = mDatabase.getReference("users");
 
         if (user != null) {
             key = getIntent().getStringExtra("key");
@@ -75,8 +93,35 @@ public class DetailsActivity extends AppCompatActivity {
             mPizzaDescription = findViewById(R.id.pizzaDescription);
             mPizzaDescription.setText(pizzaDescription);
 
+            final String authKey = user.getUid();
+
+            mReferenceUser = mDatabase.getReference("users");
+            mReferenceUser.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
+                        String DbKey = keyNode.getKey();
+                        if (DbKey == authKey) {
+                            admin = keyNode.getValue(Users.class).getAdmin();
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+
+            if (admin) {
+                editButton.setVisibility(View.VISIBLE);
+                deleteButton.setVisibility(View.VISIBLE);
+            }
+
             editButton = findViewById(R.id.editButton);
             deleteButton = findViewById(R.id.deleteButton);
+            orderButton = findViewById(R.id.orderButton);
 
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -119,6 +164,30 @@ public class DetailsActivity extends AppCompatActivity {
 
                 }
             });
+
+            orderButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Pizza pizza = new Pizza();
+
+                    key = getIntent().getStringExtra("key");
+                    pizzaName = getIntent().getStringExtra("pizzaName");
+                    pizzaDescription = getIntent().getStringExtra("pizzaDescription");
+
+                    pizza.setPizzaName(pizzaName);
+                    pizza.setPizzaDescription(pizzaDescription);
+
+                    mReferenceOrder = mDatabase.getReference("orders");
+                    String key = mReferenceOrder.push().getKey();
+                    mReferenceOrder.child(key).setValue(pizza);
+
+                    Toast.makeText(DetailsActivity.this, "Zamówiono pizzę!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(DetailsActivity.this, ListActivity.class);
+                    startActivity(intent);
+                    finish();
+                    return;
+                }
+            });
         }
     }
 
@@ -128,3 +197,5 @@ public class DetailsActivity extends AppCompatActivity {
         finish();
     }
 }
+
+

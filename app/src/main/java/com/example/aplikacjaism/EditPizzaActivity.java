@@ -100,6 +100,11 @@ public class EditPizzaActivity extends AddPizzaActivity {
                         @Override
                         public void DataIsUpdated() {
                             Toast.makeText(EditPizzaActivity.this, "Edytowano pizzę", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(EditPizzaActivity.this, ListActivity.class);
+                            startActivity(intent);
+                            finish();
+                            return;
+
                         }
 
                         @Override

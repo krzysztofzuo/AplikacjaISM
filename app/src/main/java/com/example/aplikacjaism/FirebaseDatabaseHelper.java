@@ -54,6 +54,7 @@ public class FirebaseDatabaseHelper {
                     Pizza pizza = keyNode.getValue(Pizza.class);
                     pizzas.add(pizza);
                 }
+
                 dataStatus.DataIsLoaded(pizzas, keys);
             }
 
