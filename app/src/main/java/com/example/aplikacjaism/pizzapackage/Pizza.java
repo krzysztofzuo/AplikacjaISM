@@ -1,4 +1,4 @@
-package com.example.aplikacjaism;
+package com.example.aplikacjaism.pizzapackage;
 
 public class Pizza {
     private String pizzaName;

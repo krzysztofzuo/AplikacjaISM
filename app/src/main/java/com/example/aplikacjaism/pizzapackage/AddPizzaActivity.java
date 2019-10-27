@@ -1,4 +1,4 @@
-package com.example.aplikacjaism;
+package com.example.aplikacjaism.pizzapackage;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -6,6 +6,10 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
+import com.example.aplikacjaism.DataStatus;
+import com.example.aplikacjaism.FirebaseDatabaseHelper;
+import com.example.aplikacjaism.R;
+import com.example.aplikacjaism.userpackage.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -63,7 +67,7 @@ public class AddPizzaActivity extends AppCompatActivity {
                     Toast.makeText(AddPizzaActivity.this, "Wypełnij wszystkie pola", Toast.LENGTH_SHORT).show();
                 }
 
-                new FirebaseDatabaseHelper().addPizza(mPizzaImage, pizza, new FirebaseDatabaseHelper.DataStatus() {
+                new FirebaseDatabaseHelper().addPizza(mPizzaImage, pizza, new DataStatus() {
                     @Override
                     public void DataIsLoaded(List<Pizza> pizzas, List<String> keys) {
 

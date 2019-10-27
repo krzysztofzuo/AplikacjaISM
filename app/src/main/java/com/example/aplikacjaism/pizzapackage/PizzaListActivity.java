@@ -1,8 +1,13 @@
-package com.example.aplikacjaism;
+package com.example.aplikacjaism.pizzapackage;
 
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.aplikacjaism.DataStatus;
+import com.example.aplikacjaism.FirebaseDatabaseHelper;
+import com.example.aplikacjaism.R;
+import com.example.aplikacjaism.userpackage.User;
+import com.example.aplikacjaism.userpackage.UserListActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -15,24 +20,24 @@ import android.widget.Button;
 
 import java.util.List;
 
-public class ListActivity extends AppCompatActivity {
+public class PizzaListActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.list_activity);
+        setContentView(R.layout.pizza_list_activity);
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
 
         if (user != null) {
             mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewId);
-            new FirebaseDatabaseHelper().readPizzas(new FirebaseDatabaseHelper.DataStatus() {
+            new FirebaseDatabaseHelper().readPizzas(new DataStatus() {
                 @Override
                 public void DataIsLoaded(List<Pizza> pizzas, List<String> keys) {
-                    new RecyclerView_Config().setConfig(mRecyclerView, ListActivity.this, pizzas, keys);
+                    new RecyclerViewPizza().setConfig(mRecyclerView, PizzaListActivity.this, pizzas, keys);
                 }
 
                 @Override
@@ -61,7 +66,7 @@ public class ListActivity extends AppCompatActivity {
             addButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(ListActivity.this, AddPizzaActivity.class);
+                    Intent intent = new Intent(PizzaListActivity.this, AddPizzaActivity.class);
                     startActivity(intent);
                 }
             });
@@ -70,7 +75,7 @@ public class ListActivity extends AppCompatActivity {
             usersButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(ListActivity.this, UserListActivity.class);
+                    Intent intent = new Intent(PizzaListActivity.this, UserListActivity.class);
                     startActivity(intent);
                 }
             });

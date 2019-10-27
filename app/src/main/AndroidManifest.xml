@@ -17,20 +17,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".UserListActivity"
-            android:label="@string/title_activity_user_list"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".ListActivity" />
-        <activity android:name=".SignInActivity">
+            android:name=".userpackage.UserListActivity"></activity>
+        <activity android:name=".pizzapackage.PizzaListActivity" />
+        <activity android:name=".userpackage.SignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DetailsActivity" />
-        <activity android:name=".AddPizzaActivity" />
-        <activity android:name=".EditPizzaActivity" />
+        <activity android:name=".pizzapackage.DetailsActivity" />
+        <activity android:name=".pizzapackage.AddPizzaActivity" />
+        <activity android:name=".pizzapackage.EditPizzaActivity" />
     </application>
 
 </manifest>

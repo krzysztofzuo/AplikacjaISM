@@ -1,4 +1,4 @@
-package com.example.aplikacjaism;
+package com.example.aplikacjaism.userpackage;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.aplikacjaism.R;
+import com.example.aplikacjaism.pizzapackage.PizzaListActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
@@ -62,7 +64,7 @@ public class SignInActivity extends AppCompatActivity {
                             public void onSuccess(AuthResult authResult) {
 
                                 Toast.makeText(SignInActivity.this, "Zalogowano!", Toast.LENGTH_LONG).show();
-                                Intent intent = new Intent(SignInActivity.this, ListActivity.class);
+                                Intent intent = new Intent(SignInActivity.this, PizzaListActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
                                 finish();

@@ -6,6 +6,8 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 
+import com.example.aplikacjaism.pizzapackage.Pizza;
+import com.example.aplikacjaism.userpackage.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -30,18 +32,6 @@ public class FirebaseDatabaseHelper {
     private List<User> users = new ArrayList<>();
 
     private FirebaseStorage mStorage = FirebaseStorage.getInstance();
-
-    public interface DataStatus {
-        void DataIsLoaded(List<Pizza> pizzas, List<String> keys);
-
-        void DataIsInserted();
-
-        void DataIsUpdated();
-
-        void DataIsDeleted();
-
-        void DataUsersIsLoaded(List<User> users, List<String> keys);
-    }
 
     public FirebaseDatabaseHelper() {
         mDatabase = FirebaseDatabase.getInstance();

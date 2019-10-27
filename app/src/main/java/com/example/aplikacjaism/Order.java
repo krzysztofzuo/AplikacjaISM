@@ -1,5 +1,7 @@
 package com.example.aplikacjaism;
 
+import com.example.aplikacjaism.pizzapackage.Pizza;
+
 import java.util.Date;
 
 public class Order {

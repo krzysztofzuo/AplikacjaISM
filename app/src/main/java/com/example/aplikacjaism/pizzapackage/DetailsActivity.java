@@ -1,4 +1,4 @@
-package com.example.aplikacjaism;
+package com.example.aplikacjaism.pizzapackage;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -15,6 +15,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.aplikacjaism.DataStatus;
+import com.example.aplikacjaism.FirebaseDatabaseHelper;
+import com.example.aplikacjaism.Order;
+import com.example.aplikacjaism.R;
+import com.example.aplikacjaism.userpackage.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -116,7 +121,7 @@ public class DetailsActivity extends AppCompatActivity {
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new FirebaseDatabaseHelper().deletePizza(key, new FirebaseDatabaseHelper.DataStatus()  {
+                    new FirebaseDatabaseHelper().deletePizza(key, new DataStatus()  {
                         @Override
                         public void DataIsLoaded(List<Pizza> pizzas, List<String> keys) {
 
@@ -189,7 +194,7 @@ public class DetailsActivity extends AppCompatActivity {
                 mReferenceOrder.child(key).setValue(order);
 
                 Toast.makeText(DetailsActivity.this, "Zamówiono pizzę!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(DetailsActivity.this, ListActivity.class);
+                Intent intent = new Intent(DetailsActivity.this, PizzaListActivity.class);
                 startActivity(intent);
                 finish();
                 return;

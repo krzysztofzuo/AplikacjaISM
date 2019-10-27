@@ -1,4 +1,4 @@
-package com.example.aplikacjaism;
+package com.example.aplikacjaism.userpackage;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,9 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.example.aplikacjaism.R;
+
 import java.util.List;
 
-public class RecyclerViewList {
+public class RecyclerViewUser {
     private Context mContext;
     private UsersAdapter mUsersAdapter;
 
@@ -29,13 +31,9 @@ public class RecyclerViewList {
         private TextView mUserId;
         private CheckBox mUserAdmin;
 
-        private Boolean userAdmin;
-
-        private String key;
-
         public UsersItemView(ViewGroup parent) {
             super(LayoutInflater.from(mContext).
-                    inflate(R.layout.row, parent, false));
+                    inflate(R.layout.user_row, parent, false));
 
             mUserEmail = (TextView) itemView.findViewById(R.id.userEmail);
             mUserId = (TextView) itemView.findViewById(R.id.userId);
@@ -47,7 +45,6 @@ public class RecyclerViewList {
             mUserEmail.setText(user.getEmail());
             mUserId.setText(key);
             mUserAdmin.setChecked(user.getAdmin());
-            this.key = key;
         }
     }
 

@@ -1,4 +1,4 @@
-package com.example.aplikacjaism;
+package com.example.aplikacjaism.userpackage;
 
 public class User {
     Boolean admin;

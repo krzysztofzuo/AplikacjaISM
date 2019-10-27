@@ -1,4 +1,4 @@
-package com.example.aplikacjaism;
+package com.example.aplikacjaism.pizzapackage;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.aplikacjaism.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -21,7 +22,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
-public class RecyclerView_Config {
+public class RecyclerViewPizza {
     private Context mContext;
     private PizzasAdapter mPizzasAdapter;
 
@@ -45,7 +46,7 @@ public class RecyclerView_Config {
 
         public PizzaItemView(ViewGroup parent) {
             super(LayoutInflater.from(mContext).
-                    inflate(R.layout.row, parent, false));
+                    inflate(R.layout.pizza_row, parent, false));
 
             pizzaName = (TextView) itemView.findViewById(R.id.pizzaName);
             pizzaImage = (ImageView) itemView.findViewById(R.id.pizzaImage);

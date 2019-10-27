@@ -1,4 +1,4 @@
-package com.example.aplikacjaism;
+package com.example.aplikacjaism.pizzapackage;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -11,6 +11,10 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.aplikacjaism.DataStatus;
+import com.example.aplikacjaism.FirebaseDatabaseHelper;
+import com.example.aplikacjaism.R;
+import com.example.aplikacjaism.userpackage.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -88,7 +92,7 @@ public class EditPizzaActivity extends AddPizzaActivity {
                     pizza.setPizzaName(mPizzaName.getText().toString());
                     pizza.setPizzaDescription(mPizzaDescription.getText().toString());
 
-                    new FirebaseDatabaseHelper().updatePizza(mPizzaImage, key, pizza, new FirebaseDatabaseHelper.DataStatus() {
+                    new FirebaseDatabaseHelper().updatePizza(mPizzaImage, key, pizza, new DataStatus() {
                         @Override
                         public void DataIsLoaded(List<Pizza> pizzas, List<String> keys) {
                         }
@@ -100,7 +104,7 @@ public class EditPizzaActivity extends AddPizzaActivity {
                         @Override
                         public void DataIsUpdated() {
                             Toast.makeText(EditPizzaActivity.this, "Edytowano pizzę", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(EditPizzaActivity.this, ListActivity.class);
+                            Intent intent = new Intent(EditPizzaActivity.this, PizzaListActivity.class);
                             startActivity(intent);
                             finish();
                             return;

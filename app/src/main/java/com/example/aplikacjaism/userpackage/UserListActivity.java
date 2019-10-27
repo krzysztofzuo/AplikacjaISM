@@ -1,20 +1,17 @@
-package com.example.aplikacjaism;
+package com.example.aplikacjaism.userpackage;
 
 import android.os.Bundle;
 
+import com.example.aplikacjaism.DataStatus;
+import com.example.aplikacjaism.FirebaseDatabaseHelper;
+import com.example.aplikacjaism.R;
+import com.example.aplikacjaism.pizzapackage.Pizza;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class UserListActivity extends AppCompatActivity {
@@ -32,7 +29,7 @@ public class UserListActivity extends AppCompatActivity {
 
         if (user != null) {
             mRecyclerViewList = (RecyclerView) findViewById(R.id.recyclerUserViewId);
-            new FirebaseDatabaseHelper().readUser(new FirebaseDatabaseHelper.DataStatus() {
+            new FirebaseDatabaseHelper().readUser(new DataStatus() {
                 @Override
                 public void DataIsLoaded(List<Pizza> pizzas, List<String> keys) {
 
@@ -55,7 +52,7 @@ public class UserListActivity extends AppCompatActivity {
 
                 @Override
                 public void DataUsersIsLoaded(List<User> users, List<String> keys) {
-                    new RecyclerViewList().setConfig(mRecyclerViewList, UserListActivity.this, users, keys);
+                    new RecyclerViewUser().setConfig(mRecyclerViewList, UserListActivity.this, users, keys);
                 }
             });
 
