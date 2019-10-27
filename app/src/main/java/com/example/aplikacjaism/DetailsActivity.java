@@ -101,7 +101,7 @@ public class DetailsActivity extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
                         String DbKey = keyNode.getKey();
-                        if (DbKey == authKey) {
+                        if (DbKey.contentEquals(authKey)) {
                             admin = keyNode.getValue(Users.class).getAdmin();
                         }
                     }
