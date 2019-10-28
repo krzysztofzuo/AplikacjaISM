@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -19,7 +20,9 @@ import com.example.aplikacjaism.DataStatus;
 import com.example.aplikacjaism.FirebaseDatabaseHelper;
 import com.example.aplikacjaism.Order;
 import com.example.aplikacjaism.R;
+import com.example.aplikacjaism.userpackage.RecyclerViewUser;
 import com.example.aplikacjaism.userpackage.User;
+import com.example.aplikacjaism.userpackage.UserListActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -98,31 +101,11 @@ public class DetailsActivity extends AppCompatActivity {
             mPizzaDescription = findViewById(R.id.pizzaDescription);
             mPizzaDescription.setText(pizzaDescription);
 
-
-            mReferenceUser = mDatabase.getReference("users");
-            mReferenceUser.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
-                        if (keyNode.getKey().equals(user.getUid())) {
-                            admin = keyNode.getValue(User.class).getAdmin();
-                            // TODO: 2019-10-28 ustawic widocznosc pól
-                        }
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-
-
             deleteButton = findViewById(R.id.deleteButton);
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new FirebaseDatabaseHelper().deletePizza(key, new DataStatus()  {
+                    new FirebaseDatabaseHelper().deletePizza(key, new DataStatus() {
                         @Override
                         public void DataIsLoaded(List<Pizza> pizzas, List<String> keys) {
 
@@ -165,12 +148,32 @@ public class DetailsActivity extends AppCompatActivity {
 
                 }
             });
-        }
 
 
-        if (admin) {
-            editButton.setEnabled(false);
-            deleteButton.setEnabled(false);
+            mReferenceUser = mDatabase.getReference("users");
+            mReferenceUser.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
+                        if (keyNode.getKey().equals(user.getUid())) {
+                            admin = keyNode.getValue(User.class).getAdmin();
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+            // TODO: 2019-10-28 ustawić admina
+            if (admin) {
+                deleteButton.setEnabled(true);
+                deleteButton.setVisibility(View.VISIBLE);
+                editButton.setEnabled(true);
+                editButton.setVisibility(View.VISIBLE);
+            }
         }
 
         orderButton = findViewById(R.id.orderButton);

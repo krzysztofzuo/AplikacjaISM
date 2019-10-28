@@ -40,7 +40,6 @@ public class RecyclerViewUser {
         public UsersItemView(ViewGroup parent) {
             super(LayoutInflater.from(mContext).
                     inflate(R.layout.user_row, parent, false));
-
             mUserEmail = (TextView) itemView.findViewById(R.id.userEmail);
             mUserId = (TextView) itemView.findViewById(R.id.userId);
             mUserAdmin = (CheckBox) itemView.findViewById(R.id.adminCheckBox);
