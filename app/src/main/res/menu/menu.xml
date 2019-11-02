@@ -6,5 +6,6 @@
         android:title="Wyloguj" />
     <item
         android:id="@+id/users"
-        android:title="Użytkownicy" />
+        android:title="Użytkownicy"
+        android:visible="false" />
 </menu>

@@ -6,25 +6,35 @@ import android.os.Bundle;
 import com.example.aplikacjaism.DataStatus;
 import com.example.aplikacjaism.FirebaseDatabaseHelper;
 import com.example.aplikacjaism.R;
+import com.example.aplikacjaism.userpackage.SignInActivity;
 import com.example.aplikacjaism.userpackage.User;
 import com.example.aplikacjaism.userpackage.UserListActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Menu;
-import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 
 import java.util.List;
 
 public class PizzaListActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private FirebaseAuth mAuth;
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference mUser;
+
+    private boolean admin = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,24 +82,62 @@ public class PizzaListActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
+            addButton.show();
 
-            Button usersButton = findViewById(R.id.usersButton);
-            usersButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(PizzaListActivity.this, UserListActivity.class);
-                    startActivity(intent);
-                }
-            });
-
-
+        } else {
+            startActivity(new Intent(this, SignInActivity.class));
+            finish();
         }
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        final FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) {
+            getMenuInflater().inflate(R.menu.menu, menu);
+            menu.getItem(0).setVisible(true);
+
+            mDatabase = FirebaseDatabase.getInstance();
+            mUser = mDatabase.getReference("users");
+            mUser.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
+                        if (keyNode.getKey().equals(user.getUid())) {
+                            admin = keyNode.getValue(User.class).getAdmin();
+                        }
+                    }
+                    if (admin) {
+                        menu.getItem(1).setVisible(true);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+            return true;
+        } else return false;
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.logout: {
+                mAuth.signOut();
+                finish();
+                startActivity(new Intent(this, SignInActivity.class));
+                return true;
+            }
+            case R.id.users: {
+                startActivity(new Intent(this, UserListActivity.class));
+                return true;
+            }
+
+        }
         return true;
     }
 

@@ -11,14 +11,32 @@
     android:id="@+id/linearLayout3">
 
 
-    <ImageView
-        android:id="@+id/pizzaImage"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="300px"
-        android:layout_height="300px"
-        tools:layout_conversion_absoluteHeight="114dp"
-        tools:layout_conversion_absoluteWidth="114dp"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp" />
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/pizzaImage"
+            android:layout_width="300px"
+            android:layout_height="300px"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_conversion_absoluteHeight="114dp"
+            tools:layout_conversion_absoluteWidth="114dp" />
+
+        <ProgressBar
+            android:id="@+id/storageProgressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/pizzaImage"
+            app:layout_constraintEnd_toEndOf="@+id/pizzaImage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/pizzaImage"
+            tools:visibility="invisible" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/pizzaName"

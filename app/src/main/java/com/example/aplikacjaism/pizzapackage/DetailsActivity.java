@@ -9,6 +9,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.provider.ContactsContract;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -21,6 +23,7 @@ import com.example.aplikacjaism.FirebaseDatabaseHelper;
 import com.example.aplikacjaism.Order;
 import com.example.aplikacjaism.R;
 import com.example.aplikacjaism.userpackage.RecyclerViewUser;
+import com.example.aplikacjaism.userpackage.SignInActivity;
 import com.example.aplikacjaism.userpackage.User;
 import com.example.aplikacjaism.userpackage.UserListActivity;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -35,7 +38,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -45,8 +47,6 @@ public class DetailsActivity extends AppCompatActivity {
     private FirebaseDatabase mDatabase;
     private DatabaseReference mUser;
     private DatabaseReference mReferenceOrder;
-    private DatabaseReference mReferenceUser;
-    private List<Pizza> users = new ArrayList<>();
 
     Boolean admin = false;
 
@@ -144,20 +144,24 @@ public class DetailsActivity extends AppCompatActivity {
                     intent.putExtra("pizzaName", pizzaName);
                     intent.putExtra("pizzaDescription", pizzaDescription);
                     startActivity(intent);
-
+                    finish();
 
                 }
             });
 
-
-            mReferenceUser = mDatabase.getReference("users");
-            mReferenceUser.addValueEventListener(new ValueEventListener() {
+            mUser.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
                         if (keyNode.getKey().equals(user.getUid())) {
                             admin = keyNode.getValue(User.class).getAdmin();
                         }
+                    }
+                    if (admin) {
+                        deleteButton.setEnabled(true);
+                        deleteButton.setVisibility(View.VISIBLE);
+                        editButton.setEnabled(true);
+                        editButton.setVisibility(View.VISIBLE);
                     }
                 }
 
@@ -166,14 +170,6 @@ public class DetailsActivity extends AppCompatActivity {
 
                 }
             });
-
-            // TODO: 2019-10-28 ustawić admina
-            if (admin) {
-                deleteButton.setEnabled(true);
-                deleteButton.setVisibility(View.VISIBLE);
-                editButton.setEnabled(true);
-                editButton.setVisibility(View.VISIBLE);
-            }
         }
 
         orderButton = findViewById(R.id.orderButton);
@@ -210,6 +206,53 @@ public class DetailsActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         finish();
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        final FirebaseUser user = mAuth.getCurrentUser();
+
+        getMenuInflater().inflate(R.menu.menu, menu);
+        menu.getItem(0).setVisible(true);
+
+        mUser.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
+                    if (keyNode.getKey().equals(user.getUid())) {
+                        admin = keyNode.getValue(User.class).getAdmin();
+                    }
+                }
+                if (admin) {
+                    menu.getItem(1).setVisible(true);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.logout: {
+                mAuth.signOut();
+                startActivity(new Intent(this, SignInActivity.class));
+                return true;
+            }
+            case R.id.users: {
+                startActivity(new Intent(this, UserListActivity.class));
+                return true;
+            }
+
+        }
+        return true;
     }
 }
 

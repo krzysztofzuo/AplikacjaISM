@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -40,6 +41,7 @@ public class RecyclerViewPizza {
     class PizzaItemView extends RecyclerView.ViewHolder {
         private TextView pizzaName;
         private ImageView pizzaImage;
+        private ProgressBar storageProgressBar;
 
         private String pizzaDescription;
         private String key;
@@ -50,6 +52,7 @@ public class RecyclerViewPizza {
 
             pizzaName = (TextView) itemView.findViewById(R.id.pizzaName);
             pizzaImage = (ImageView) itemView.findViewById(R.id.pizzaImage);
+            storageProgressBar = (ProgressBar) itemView.findViewById(R.id.storageProgressBar);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -66,9 +69,11 @@ public class RecyclerViewPizza {
         public void bind(Pizza pizza, String key) {
             pizzaName.setText(pizza.getPizzaName());
             pizzaDescription = pizza.getPizzaDescription();
+            storageProgressBar.setVisibility(View.VISIBLE);
             storageRef.child("zdjecia/" + key + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
+                    storageProgressBar.setVisibility(View.INVISIBLE);
                     Glide.with(mContext).load(uri).into(pizzaImage);
                 }
             }).addOnFailureListener(new OnFailureListener() {
