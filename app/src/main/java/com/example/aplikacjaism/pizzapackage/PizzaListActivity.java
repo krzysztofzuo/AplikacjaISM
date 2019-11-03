@@ -38,6 +38,7 @@ public class PizzaListActivity extends AppCompatActivity {
 
     private boolean admin = false;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +46,7 @@ public class PizzaListActivity extends AppCompatActivity {
         setContentView(R.layout.pizza_list_activity);
 
         mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
+        final FirebaseUser user = mAuth.getCurrentUser();
 
         if (user != null) {
             mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewId);
@@ -77,7 +78,7 @@ public class PizzaListActivity extends AppCompatActivity {
             });
 
 
-            FloatingActionButton addButton = findViewById(R.id.goToAddActivityButton);
+            final FloatingActionButton addButton = findViewById(R.id.goToAddActivityButton);
             addButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -85,7 +86,30 @@ public class PizzaListActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
-            addButton.show();
+
+            mDatabase = FirebaseDatabase.getInstance();
+            mUser = mDatabase.getReference("users");
+            mUser.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
+                        if (keyNode.getKey().equals(user.getUid())) {
+                            admin = keyNode.getValue(User.class).getAdmin();
+                        }
+                    }
+                    if (admin) {
+                        addButton.show();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+
+
 
         } else {
             startActivity(new Intent(this, SignInActivity.class));

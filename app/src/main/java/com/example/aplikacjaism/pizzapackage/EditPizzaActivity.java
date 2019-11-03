@@ -45,7 +45,7 @@ public class EditPizzaActivity extends AddPizzaActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.add_activity);
 
         mAuth = FirebaseAuth.getInstance();
@@ -135,20 +135,6 @@ public class EditPizzaActivity extends AddPizzaActivity {
                     });
                 }
             });
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE) {
-            imgUri = data.getData();
-            mPizzaImage.setImageURI(imgUri);
-        }
-        if (requestCode == REQUEST_IMAGE_CAPTURE) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            mPizzaImage.setImageBitmap(imageBitmap);
         }
     }
 }

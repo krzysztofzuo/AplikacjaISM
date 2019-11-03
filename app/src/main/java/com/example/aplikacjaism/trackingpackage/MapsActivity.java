@@ -1,20 +1,42 @@
 package com.example.aplikacjaism.trackingpackage;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Icon;
 import android.os.Bundle;
 
 import com.example.aplikacjaism.R;
+import com.google.android.gms.dynamic.IObjectWrapper;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference mReferenceOrder;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +46,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
+        mDatabase = FirebaseDatabase.getInstance();
+        mReferenceOrder = mDatabase.getReference("orders");
+
+
+        mAuth = FirebaseAuth.getInstance();
     }
 
 
@@ -40,9 +69,46 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+
+        final FirebaseUser user = mAuth.getCurrentUser();
+
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng location = new LatLng(51.2351799, 22.5488377);
+        CameraUpdate zoom = CameraUpdateFactory.newLatLngZoom(location, 20);
+
+        MarkerOptions markerOptions = new MarkerOptions().position(location);
+
+        final Marker marker = mMap.addMarker(markerOptions);
+        marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.pizza));
+
+        marker.setPosition(location);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+        mMap.animateCamera(zoom);
+
+
+        mReferenceOrder.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<String> keys = new ArrayList<>();
+                for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
+                    keys.add(keyNode.getKey());
+
+                    if (keyNode.getValue(Order.class).getUserId().equals(user.getUid())) {
+                        Order order = keyNode.getValue(Order.class);
+                        LatLng coordinates = new LatLng(order.getCoordinates().getLatitude(), order.getCoordinates().getLongitude());
+                        marker.setPosition(coordinates);
+
+                    }
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 }

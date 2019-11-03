@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.provider.ContactsContract;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,9 +20,10 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.aplikacjaism.DataStatus;
 import com.example.aplikacjaism.FirebaseDatabaseHelper;
-import com.example.aplikacjaism.Order;
+import com.example.aplikacjaism.trackingpackage.LatLng;
+import com.example.aplikacjaism.trackingpackage.Order;
 import com.example.aplikacjaism.R;
-import com.example.aplikacjaism.userpackage.RecyclerViewUser;
+import com.example.aplikacjaism.trackingpackage.MapsActivity;
 import com.example.aplikacjaism.userpackage.SignInActivity;
 import com.example.aplikacjaism.userpackage.User;
 import com.example.aplikacjaism.userpackage.UserListActivity;
@@ -189,6 +189,8 @@ public class DetailsActivity extends AppCompatActivity {
                 pizza.setPizzaDescription(pizzaDescription);
                 order.setPizza(pizza);
                 order.setDate(new Date());
+                order.setCoordinates(new LatLng(51.2351799, 22.5488377));
+                order.setUserId(mAuth.getUid());
 
                 mReferenceOrder = mDatabase.getReference("orders");
                 String key = mReferenceOrder.push().getKey();
@@ -196,7 +198,7 @@ public class DetailsActivity extends AppCompatActivity {
                 mReferenceOrder.child(key).setValue(order);
 
                 Toast.makeText(DetailsActivity.this, "Zamówiono pizzę!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(DetailsActivity.this, PizzaListActivity.class);
+                Intent intent = new Intent(DetailsActivity.this, MapsActivity.class);
                 startActivity(intent);
                 finish();
                 return;
