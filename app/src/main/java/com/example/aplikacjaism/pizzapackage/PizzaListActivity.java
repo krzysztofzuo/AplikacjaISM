@@ -8,6 +8,8 @@ import com.example.aplikacjaism.DataStatus;
 import com.example.aplikacjaism.FirebaseDatabaseHelper;
 import com.example.aplikacjaism.R;
 import com.example.aplikacjaism.trackingpackage.MapsActivity;
+import com.example.aplikacjaism.trackingpackage.Order;
+import com.example.aplikacjaism.trackingpackage.OrderListActivity;
 import com.example.aplikacjaism.userpackage.SignInActivity;
 import com.example.aplikacjaism.userpackage.User;
 import com.example.aplikacjaism.userpackage.UserListActivity;
@@ -75,6 +77,11 @@ public class PizzaListActivity extends AppCompatActivity {
                 public void DataUsersIsLoaded(List<User> users, List<String> keys) {
 
                 }
+
+                @Override
+                public void DataOrdersIsLoaded(List<Order> orders, List<String> keys) {
+
+                }
             });
 
 
@@ -109,8 +116,6 @@ public class PizzaListActivity extends AppCompatActivity {
             });
 
 
-
-
         } else {
             startActivity(new Intent(this, SignInActivity.class));
             finish();
@@ -136,6 +141,7 @@ public class PizzaListActivity extends AppCompatActivity {
                     }
                     if (admin) {
                         menu.getItem(1).setVisible(true);
+                        menu.getItem(3).setVisible(true);
                     }
                 }
 
@@ -165,6 +171,9 @@ public class PizzaListActivity extends AppCompatActivity {
             }
             case R.id.maps: {
                 startActivity(new Intent(this, MapsActivity.class));
+            }
+            case R.id.orders: {
+                startActivity(new Intent(this, OrderListActivity.class));
             }
 
         }

@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 
 import com.example.aplikacjaism.pizzapackage.Pizza;
+import com.example.aplikacjaism.trackingpackage.Order;
 import com.example.aplikacjaism.userpackage.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,9 +28,11 @@ public class FirebaseDatabaseHelper {
     private FirebaseDatabase mDatabase;
     private DatabaseReference mReferencePizza;
     private DatabaseReference mReferenceUser;
+    private DatabaseReference mReferenceOrders;
 
     private List<Pizza> pizzas = new ArrayList<>();
     private List<User> users = new ArrayList<>();
+    private List<Order> orders = new ArrayList<>();
 
     private FirebaseStorage mStorage = FirebaseStorage.getInstance();
 
@@ -37,6 +40,7 @@ public class FirebaseDatabaseHelper {
         mDatabase = FirebaseDatabase.getInstance();
         mReferencePizza = mDatabase.getReference("pizzas");
         mReferenceUser = mDatabase.getReference("users");
+        mReferenceOrders = mDatabase.getReference("orders");
     }
 
     public void readPizzas(final DataStatus dataStatus) {
@@ -190,4 +194,26 @@ public class FirebaseDatabaseHelper {
             }
         });
     }
+
+    public void readOrders(final DataStatus dataStatus) {
+        mReferenceOrders.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                orders.clear();
+                List<String> keys = new ArrayList<>();
+                for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
+                    keys.add(keyNode.getKey());
+                    Order order = keyNode.getValue(Order.class);
+                    orders.add(order);
+                }
+                dataStatus.DataOrdersIsLoaded(orders, keys);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 }

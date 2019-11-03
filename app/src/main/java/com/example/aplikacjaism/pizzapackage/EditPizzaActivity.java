@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.example.aplikacjaism.DataStatus;
 import com.example.aplikacjaism.FirebaseDatabaseHelper;
 import com.example.aplikacjaism.R;
+import com.example.aplikacjaism.trackingpackage.Order;
 import com.example.aplikacjaism.userpackage.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -130,6 +131,11 @@ public class EditPizzaActivity extends AddPizzaActivity {
 
                         @Override
                         public void DataUsersIsLoaded(List<User> users, List<String> keys) {
+
+                        }
+
+                        @Override
+                        public void DataOrdersIsLoaded(List<Order> orders, List<String> keys) {
 
                         }
                     });

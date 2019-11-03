@@ -134,6 +134,11 @@ public class DetailsActivity extends AppCompatActivity {
                         public void DataUsersIsLoaded(List<User> users, List<String> keys) {
 
                         }
+
+                        @Override
+                        public void DataOrdersIsLoaded(List<Order> orders, List<String> keys) {
+
+                        }
                     });
                 }
             });

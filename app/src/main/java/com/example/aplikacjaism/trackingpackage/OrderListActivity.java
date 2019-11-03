@@ -1,37 +1,44 @@
-package com.example.aplikacjaism.userpackage;
+package com.example.aplikacjaism.trackingpackage;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 
 import com.example.aplikacjaism.DataStatus;
 import com.example.aplikacjaism.FirebaseDatabaseHelper;
 import com.example.aplikacjaism.R;
 import com.example.aplikacjaism.pizzapackage.Pizza;
-import com.example.aplikacjaism.trackingpackage.Order;
+import com.example.aplikacjaism.userpackage.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
-public class UserListActivity extends AppCompatActivity {
+public class OrderListActivity extends AppCompatActivity {
     private RecyclerView mRecyclerViewList;
     private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        setContentView(R.layout.user_list_activity);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setContentView(R.layout.order_list_activity);
 
         mAuth = FirebaseAuth.getInstance();
         final FirebaseUser user = mAuth.getCurrentUser();
 
         if (user != null) {
-            mRecyclerViewList = (RecyclerView) findViewById(R.id.recyclerUserViewId);
-            new FirebaseDatabaseHelper().readUser(new DataStatus() {
+            mRecyclerViewList = (RecyclerView) findViewById(R.id.recyclerOrderViewId);
+            new FirebaseDatabaseHelper().readOrders(new DataStatus() {
                 @Override
                 public void DataIsLoaded(List<Pizza> pizzas, List<String> keys) {
 
@@ -54,15 +61,16 @@ public class UserListActivity extends AppCompatActivity {
 
                 @Override
                 public void DataUsersIsLoaded(List<User> users, List<String> keys) {
-                    new RecyclerViewUser().setConfig(mRecyclerViewList, UserListActivity.this, users, keys);
+
                 }
 
                 @Override
                 public void DataOrdersIsLoaded(List<Order> orders, List<String> keys) {
-
+                    new RecyclerViewOrder().setConfig(mRecyclerViewList, OrderListActivity.this, orders, keys);
                 }
             });
-        }
-    }
 
+        }
+
+    }
 }

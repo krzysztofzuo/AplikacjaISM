@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import com.example.aplikacjaism.DataStatus;
 import com.example.aplikacjaism.FirebaseDatabaseHelper;
 import com.example.aplikacjaism.R;
+import com.example.aplikacjaism.trackingpackage.Order;
 import com.example.aplikacjaism.userpackage.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -112,6 +113,11 @@ public class AddPizzaActivity extends AppCompatActivity {
 
                     @Override
                     public void DataUsersIsLoaded(List<User> users, List<String> keys) {
+
+                    }
+
+                    @Override
+                    public void DataOrdersIsLoaded(List<Order> orders, List<String> keys) {
 
                     }
                 });
