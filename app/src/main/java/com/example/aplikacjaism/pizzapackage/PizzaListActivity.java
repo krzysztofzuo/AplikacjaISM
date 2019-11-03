@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.example.aplikacjaism.DataStatus;
 import com.example.aplikacjaism.FirebaseDatabaseHelper;
 import com.example.aplikacjaism.R;
+import com.example.aplikacjaism.trackingpackage.MapsActivity;
 import com.example.aplikacjaism.userpackage.SignInActivity;
 import com.example.aplikacjaism.userpackage.User;
 import com.example.aplikacjaism.userpackage.UserListActivity;
@@ -40,7 +41,7 @@ public class PizzaListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.pizza_list_activity);
 
         mAuth = FirebaseAuth.getInstance();
@@ -137,6 +138,9 @@ public class PizzaListActivity extends AppCompatActivity {
             case R.id.users: {
                 startActivity(new Intent(this, UserListActivity.class));
                 return true;
+            }
+            case R.id.maps: {
+                startActivity(new Intent(this, MapsActivity.class));
             }
 
         }

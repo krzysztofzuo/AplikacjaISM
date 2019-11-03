@@ -8,4 +8,7 @@
         android:id="@+id/users"
         android:title="Użytkownicy"
         android:visible="false" />
+    <item
+        android:id="@+id/maps"
+        android:title="Śledź dostawcę" />
 </menu>

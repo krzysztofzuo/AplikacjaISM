@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Aplikacja Pizza</string>
     <string name="title_activity_user_list">UserListActivity</string>
+    <string name="title_activity_maps">Śledzenie dostawcy</string>
 </resources>
