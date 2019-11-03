@@ -1,6 +1,9 @@
 package com.example.aplikacjaism.pizzapackage;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -14,7 +17,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.provider.MediaStore;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,9 +28,11 @@ import java.util.List;
 
 public class AddPizzaActivity extends AppCompatActivity {
     static final int PICK_IMAGE = 1;
+    static final int REQUEST_IMAGE_CAPTURE = 2;
     protected ImageView mPizzaImage;
     protected TextView mPizzaName;
     protected TextView mPizzaDescription;
+    protected Button mPizzaImgageFromGallery;
 
     private FloatingActionButton mAddPizzaButton;
 
@@ -35,16 +42,17 @@ public class AddPizzaActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.add_activity);
-        mPizzaImage = findViewById(R.id.newPizzaImage);
+
         mPizzaName = findViewById(R.id.newPizzaName);
         mPizzaDescription = findViewById(R.id.newPizzaDescription);
 
-        mAddPizzaButton = findViewById(R.id.addPizzaButton);
         addpizzaText = findViewById(R.id.addPizzaText);
         addpizzaText.setText("Dodaj nową pizzę");
 
-        mPizzaImage.setOnClickListener(new View.OnClickListener() {
+        mPizzaImgageFromGallery = findViewById(R.id.newGalleryImage);
+        mPizzaImgageFromGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
@@ -54,6 +62,18 @@ public class AddPizzaActivity extends AppCompatActivity {
             }
         });
 
+        mPizzaImage = findViewById(R.id.newPizzaImage);
+        mPizzaImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                }
+            }
+        });
+
+        mAddPizzaButton = findViewById(R.id.addPizzaButton);
         mAddPizzaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,6 +126,11 @@ public class AddPizzaActivity extends AppCompatActivity {
         if (requestCode == PICK_IMAGE) {
             imgUri = data.getData();
             mPizzaImage.setImageURI(imgUri);
+        }
+        if (requestCode == REQUEST_IMAGE_CAPTURE) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            mPizzaImage.setImageBitmap(imageBitmap);
         }
     }
 

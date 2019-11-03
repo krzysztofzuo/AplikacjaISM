@@ -1,12 +1,15 @@
 package com.example.aplikacjaism.pizzapackage;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Toast;
 
@@ -42,6 +45,7 @@ public class EditPizzaActivity extends AddPizzaActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.add_activity);
 
         mAuth = FirebaseAuth.getInstance();
@@ -54,15 +58,33 @@ public class EditPizzaActivity extends AddPizzaActivity {
             pizzaName = getIntent().getStringExtra("pizzaName");
             pizzaDescription = getIntent().getStringExtra("pizzaDescription");
 
-            addPizzaButton = findViewById(R.id.addPizzaButton);
-
             mPizzaName = findViewById(R.id.newPizzaName);
             mPizzaName.setText(pizzaName);
 
             mPizzaDescription = findViewById(R.id.newPizzaDescription);
             mPizzaDescription.setText(pizzaDescription);
 
+            mPizzaImgageFromGallery = findViewById(R.id.newGalleryImage);
+            mPizzaImgageFromGallery.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent();
+                    intent.setType("image/*");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+                }
+            });
+
             mPizzaImage = findViewById(R.id.newPizzaImage);
+            mPizzaImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                    }
+                }
+            });
             storageRef.child("zdjecia/" + key + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
@@ -75,16 +97,7 @@ public class EditPizzaActivity extends AddPizzaActivity {
                 }
             });
 
-            mPizzaImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent();
-                    intent.setType("image/*");
-                    intent.setAction(Intent.ACTION_GET_CONTENT);
-                    startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
-                }
-            });
-
+            addPizzaButton = findViewById(R.id.addPizzaButton);
             addPizzaButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -131,6 +144,11 @@ public class EditPizzaActivity extends AddPizzaActivity {
         if (requestCode == PICK_IMAGE) {
             imgUri = data.getData();
             mPizzaImage.setImageURI(imgUri);
+        }
+        if (requestCode == REQUEST_IMAGE_CAPTURE) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            mPizzaImage.setImageBitmap(imageBitmap);
         }
     }
 }

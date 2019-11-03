@@ -1,5 +1,6 @@
 package com.example.aplikacjaism.userpackage;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import com.example.aplikacjaism.DataStatus;
@@ -21,6 +22,7 @@ public class UserListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.user_list_activity);
 
         mAuth = FirebaseAuth.getInstance();
