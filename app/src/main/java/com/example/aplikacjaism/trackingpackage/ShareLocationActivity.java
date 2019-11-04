@@ -1,5 +1,9 @@
 package com.example.aplikacjaism.trackingpackage;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -11,10 +15,6 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.example.aplikacjaism.R;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 public class ShareLocationActivity extends AppCompatActivity implements LocationListener {
     private String key;
@@ -44,13 +44,42 @@ public class ShareLocationActivity extends AppCompatActivity implements Location
             }
             return;
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500, 0, (LocationListener) this);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 5, (LocationListener) this);
 
     }
 
+
+    LocationListener locationListenerGPS = new LocationListener() {
+        @Override
+        public void onLocationChanged(android.location.Location location) {
+            double latitude = location.getLatitude();
+            double longitude = location.getLongitude();
+            String msg = "Szerokość: " + latitude + "  Długość: " + longitude;
+            txtLat.setText(msg);
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+
+        }
+    };
+
     @Override
     public void onLocationChanged(Location location) {
-        txtLat.setText("Latitude:" + location.getLatitude() + ", Longitude:" + location.getLongitude());
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
+        String msg = "Szerokość: " + latitude + "Długość: " + longitude;
+        txtLat.setText(msg);
     }
 
     @Override
