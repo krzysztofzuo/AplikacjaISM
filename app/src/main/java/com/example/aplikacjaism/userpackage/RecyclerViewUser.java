@@ -54,7 +54,6 @@ public class RecyclerViewUser {
 
                     mDatabase = FirebaseDatabase.getInstance();
                     mReferenceUser = mDatabase.getReference("users");
-
                     mReferenceUser.child(mUserId.getText().toString()).setValue(user);
                 }
             });
