@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.aplikacjaism.R;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -23,6 +24,7 @@ public class RecyclerViewUser {
     private UsersAdapter mUsersAdapter;
     private FirebaseDatabase mDatabase;
     private DatabaseReference mReferenceUser;
+    private FirebaseAuth mAuth;
 
 
     public void setConfig(RecyclerView recyclerView, Context context, List<User> users, List<String> keys) {
@@ -44,7 +46,6 @@ public class RecyclerViewUser {
             mUserId = (TextView) itemView.findViewById(R.id.userId);
             mUserAdmin = (CheckBox) itemView.findViewById(R.id.adminCheckBox);
 
-
             mUserAdmin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -62,7 +63,13 @@ public class RecyclerViewUser {
         public void bind(User user, String key) {
             mUserEmail.setText(user.getEmail());
             mUserId.setText(key);
-            mUserAdmin.setChecked(user.getAdmin());
+            mAuth = FirebaseAuth.getInstance();
+            if (key.equals(mAuth.getUid())) {
+                mUserAdmin.setEnabled(false);
+                mUserAdmin.setVisibility(View.INVISIBLE);
+            } else {
+                mUserAdmin.setChecked(user.getAdmin());
+            }
         }
     }
 

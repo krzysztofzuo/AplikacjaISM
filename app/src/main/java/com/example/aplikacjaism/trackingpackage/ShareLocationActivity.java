@@ -25,7 +25,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class ShareLocationActivity extends AppCompatActivity {
     private String key;
-    private Context context;
     LocationManager locationManager;
     TextView txtLat;
     FirebaseDatabase mDatabase;
@@ -54,8 +53,8 @@ public class ShareLocationActivity extends AppCompatActivity {
                             Manifest.permission.ACCESS_FINE_LOCATION,},
                     11);
             if (Build.VERSION.SDK_INT >= 23 &&
-                    ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                    ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                    ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return;
             }
             return;

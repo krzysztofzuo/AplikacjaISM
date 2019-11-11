@@ -3,7 +3,6 @@ package com.example.aplikacjaism.pizzapackage;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -139,6 +138,5 @@ public class AddPizzaActivity extends AppCompatActivity {
             mPizzaImage.setImageBitmap(imageBitmap);
         }
     }
-
 
 }

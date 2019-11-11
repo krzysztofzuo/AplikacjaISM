@@ -183,6 +183,36 @@ public class PizzaListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        new FirebaseDatabaseHelper().readPizzas(new DataStatus() {
+            @Override
+            public void DataIsLoaded(List<Pizza> pizzas, List<String> keys) {
+                new RecyclerViewPizza().setConfig(mRecyclerView, PizzaListActivity.this, pizzas, keys);
+            }
 
+            @Override
+            public void DataIsInserted() {
+
+            }
+
+            @Override
+            public void DataIsUpdated() {
+
+            }
+
+            @Override
+            public void DataIsDeleted() {
+
+            }
+
+            @Override
+            public void DataUsersIsLoaded(List<User> users, List<String> keys) {
+
+            }
+
+            @Override
+            public void DataOrdersIsLoaded(List<Order> orders, List<String> keys) {
+
+            }
+        });
     }
 }
