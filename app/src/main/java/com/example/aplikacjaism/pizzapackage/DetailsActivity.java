@@ -54,6 +54,7 @@ public class DetailsActivity extends AppCompatActivity {
     private ImageView mPizzaImage;
     private TextView mPizzaName;
     private TextView mPizzaDescription;
+    private TextView mAddress;
 
     private Button editButton;
     private Button deleteButton;
@@ -62,6 +63,7 @@ public class DetailsActivity extends AppCompatActivity {
     private String key;
     private String pizzaName;
     private String pizzaDescription;
+    private String address;
 
     FirebaseStorage storage = FirebaseStorage.getInstance();
     // Create a storage reference from our app
@@ -70,7 +72,7 @@ public class DetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.details);
 
         mAuth = FirebaseAuth.getInstance();
@@ -102,6 +104,8 @@ public class DetailsActivity extends AppCompatActivity {
 
             mPizzaDescription = findViewById(R.id.pizzaDescription);
             mPizzaDescription.setText(pizzaDescription);
+
+            mAddress = findViewById(R.id.address);
 
             deleteButton = findViewById(R.id.deleteButton);
             deleteButton.setOnClickListener(new View.OnClickListener() {
@@ -190,23 +194,28 @@ public class DetailsActivity extends AppCompatActivity {
                 pizzaName = getIntent().getStringExtra("pizzaName");
                 pizzaDescription = getIntent().getStringExtra("pizzaDescription");
 
-                pizza.setPizzaName(pizzaName);
-                pizza.setPizzaDescription(pizzaDescription);
-                order.setPizza(pizza);
-                order.setDate(new Date());
-                order.setCoordinates(new LatLng(51.2351799, 22.5488377));
-                order.setUserId(mAuth.getUid());
+                address = mAddress.getText().toString();
+                if (address.equals("")) {
+                    Toast.makeText(DetailsActivity.this, "Podaj adres!", Toast.LENGTH_SHORT).show();
+                } else {
+                    pizza.setPizzaName(pizzaName);
+                    pizza.setPizzaDescription(pizzaDescription);
+                    order.setPizza(pizza);
+                    order.setDate(new Date());
+                    order.setCoordinates(new LatLng(51.2351799, 22.5488377));
+                    order.setUserId(mAuth.getUid());
+                    order.setAddress(address);
+                    mReferenceOrder = mDatabase.getReference("orders");
+                    String key = mReferenceOrder.push().getKey();
 
-                mReferenceOrder = mDatabase.getReference("orders");
-                String key = mReferenceOrder.push().getKey();
+                    mReferenceOrder.child(key).setValue(order);
 
-                mReferenceOrder.child(key).setValue(order);
-
-                Toast.makeText(DetailsActivity.this, "Zamówiono pizzę!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(DetailsActivity.this, MapsActivity.class);
-                startActivity(intent);
-                finish();
-                return;
+                    Toast.makeText(DetailsActivity.this, "Zamówiono pizzę!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(DetailsActivity.this, MapsActivity.class);
+                    startActivity(intent);
+                    finish();
+                    return;
+                }
             }
         });
     }

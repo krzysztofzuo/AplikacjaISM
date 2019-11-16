@@ -97,7 +97,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         Order order = keyNode.getValue(Order.class);
                         LatLng coordinates = new LatLng(order.getCoordinates().getLatitude(), order.getCoordinates().getLongitude());
                         marker.setPosition(coordinates);
-
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(coordinates));
+                        CameraUpdate zoom = CameraUpdateFactory.newLatLngZoom(coordinates, 20);
+                        mMap.animateCamera(zoom);
                     }
                 }
 

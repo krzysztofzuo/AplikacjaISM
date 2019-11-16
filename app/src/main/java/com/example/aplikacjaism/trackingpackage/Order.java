@@ -9,6 +9,7 @@ public class Order {
     private Date date;
     private com.example.aplikacjaism.trackingpackage.LatLng coordinates;
     private String userId;
+    private String address;
 
     public Pizza getPizza() {
         return pizza;
@@ -24,6 +25,14 @@ public class Order {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public com.example.aplikacjaism.trackingpackage.LatLng getCoordinates() {
@@ -45,10 +54,11 @@ public class Order {
     public Order() {
     }
 
-    public Order(Pizza pizza, Date date, LatLng coordinates, String userId) {
+    public Order(Pizza pizza, Date date, LatLng coordinates, String userId, String address) {
         this.pizza = pizza;
         this.date = date;
         this.coordinates = coordinates;
         this.userId = userId;
+        this.address = address;
     }
 }

@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -25,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class ShareLocationActivity extends AppCompatActivity {
     private String key;
+    private String address;
     LocationManager locationManager;
     TextView txtLat;
     FirebaseDatabase mDatabase;
@@ -32,16 +34,21 @@ public class ShareLocationActivity extends AppCompatActivity {
 
     private Button orderFinishButton;
     private Button navigateButton;
+    private TextView mAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.share_location_activity);
         key = getIntent().getStringExtra("key");
+        address = getIntent().getStringExtra("address");
 
         txtLat = findViewById(R.id.lokacja);
         orderFinishButton = findViewById(R.id.orderFinishButton);
         navigateButton = findViewById(R.id.navigateButton);
+
+        mAddress = findViewById(R.id.orderAddress);
+        mAddress.setText(address);
 
         mDatabase = FirebaseDatabase.getInstance();
         mReference = mDatabase.getReference("orders");
@@ -69,6 +76,15 @@ public class ShareLocationActivity extends AppCompatActivity {
                 Toast.makeText(ShareLocationActivity.this, "Dostawa została zakończona!", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(ShareLocationActivity.this, PizzaListActivity.class));
                 finish();
+            }
+        });
+
+        navigateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String map = "http://maps.google.co.in/maps?q=" + address;
+                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(map));
+                startActivity(i);
             }
         });
     }
