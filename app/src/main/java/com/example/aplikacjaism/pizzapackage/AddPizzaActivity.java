@@ -75,49 +75,47 @@ public class AddPizzaActivity extends AppCompatActivity {
         mAddPizzaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Pizza pizza = new Pizza();
-                try {
+                if (mPizzaName.getText().toString().equals("") || mPizzaDescription.getText().toString().equals("")) {
+                    Toast.makeText(AddPizzaActivity.this, "Wypełnij wszystkie pola", Toast.LENGTH_SHORT).show();
+                } else {
+                    Pizza pizza = new Pizza();
                     pizza.setPizzaName(mPizzaName.getText().toString());
                     pizza.setPizzaDescription(mPizzaDescription.getText().toString());
 
+                    new FirebaseDatabaseHelper().addPizza(mPizzaImage, pizza, new DataStatus() {
+                        @Override
+                        public void DataIsLoaded(List<Pizza> pizzas, List<String> keys) {
 
-                } catch (NullPointerException e) {
-                    Toast.makeText(AddPizzaActivity.this, "Wypełnij wszystkie pola", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void DataIsInserted() {
+                            Toast.makeText(AddPizzaActivity.this, "Dodano nową pizzę", Toast.LENGTH_SHORT).show();
+                            finish();
+                            return;
+                        }
+
+                        @Override
+                        public void DataIsUpdated() {
+
+                        }
+
+                        @Override
+                        public void DataIsDeleted() {
+
+                        }
+
+                        @Override
+                        public void DataUsersIsLoaded(List<User> users, List<String> keys) {
+
+                        }
+
+                        @Override
+                        public void DataOrdersIsLoaded(List<Order> orders, List<String> keys) {
+
+                        }
+                    });
                 }
-
-                new FirebaseDatabaseHelper().addPizza(mPizzaImage, pizza, new DataStatus() {
-                    @Override
-                    public void DataIsLoaded(List<Pizza> pizzas, List<String> keys) {
-
-                    }
-
-                    @Override
-                    public void DataIsInserted() {
-                        Toast.makeText(AddPizzaActivity.this, "Dodano nową pizzę", Toast.LENGTH_SHORT).show();
-                        finish();
-                        return;
-                    }
-
-                    @Override
-                    public void DataIsUpdated() {
-
-                    }
-
-                    @Override
-                    public void DataIsDeleted() {
-
-                    }
-
-                    @Override
-                    public void DataUsersIsLoaded(List<User> users, List<String> keys) {
-
-                    }
-
-                    @Override
-                    public void DataOrdersIsLoaded(List<Order> orders, List<String> keys) {
-
-                    }
-                });
             }
         });
     }

@@ -100,43 +100,47 @@ public class EditPizzaActivity extends AddPizzaActivity {
             addPizzaButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Pizza pizza = new Pizza();
-                    pizza.setPizzaName(mPizzaName.getText().toString());
-                    pizza.setPizzaDescription(mPizzaDescription.getText().toString());
+                    if (mPizzaName.getText().toString().equals("") || mPizzaDescription.getText().toString().equals("")) {
+                        Toast.makeText(EditPizzaActivity.this, "Wypełnij wszystkie pola", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Pizza pizza = new Pizza();
+                        pizza.setPizzaName(mPizzaName.getText().toString());
+                        pizza.setPizzaDescription(mPizzaDescription.getText().toString());
 
-                    new FirebaseDatabaseHelper().updatePizza(mPizzaImage, key, pizza, new DataStatus() {
-                        @Override
-                        public void DataIsLoaded(List<Pizza> pizzas, List<String> keys) {
-                        }
+                        new FirebaseDatabaseHelper().updatePizza(mPizzaImage, key, pizza, new DataStatus() {
+                            @Override
+                            public void DataIsLoaded(List<Pizza> pizzas, List<String> keys) {
+                            }
 
-                        @Override
-                        public void DataIsInserted() {
-                        }
+                            @Override
+                            public void DataIsInserted() {
+                            }
 
-                        @Override
-                        public void DataIsUpdated() {
-                            Toast.makeText(EditPizzaActivity.this, "Edytowano pizzę", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(EditPizzaActivity.this, PizzaListActivity.class);
-                            startActivity(intent);
-                            finish();
-                            return;
+                            @Override
+                            public void DataIsUpdated() {
+                                Toast.makeText(EditPizzaActivity.this, "Edytowano pizzę", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(EditPizzaActivity.this, PizzaListActivity.class);
+                                startActivity(intent);
+                                finish();
+                                return;
 
-                        }
+                            }
 
-                        @Override
-                        public void DataIsDeleted() {
-                        }
+                            @Override
+                            public void DataIsDeleted() {
+                            }
 
-                        @Override
-                        public void DataUsersIsLoaded(List<User> users, List<String> keys) {
+                            @Override
+                            public void DataUsersIsLoaded(List<User> users, List<String> keys) {
 
-                        }
+                            }
 
-                        @Override
-                        public void DataOrdersIsLoaded(List<Order> orders, List<String> keys) {
+                            @Override
+                            public void DataOrdersIsLoaded(List<Order> orders, List<String> keys) {
 
-                        }
-                    });
+                            }
+                        });
+                    }
                 }
             });
         }
