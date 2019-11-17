@@ -52,6 +52,8 @@
         <activity android:name=".pizzapackage.DetailsActivity" />
         <activity android:name=".pizzapackage.AddPizzaActivity" />
         <activity android:name=".pizzapackage.EditPizzaActivity" />
+
+        <service android:name=".trackingpackage.ShareLocationService" />
     </application>
 
 </manifest>
