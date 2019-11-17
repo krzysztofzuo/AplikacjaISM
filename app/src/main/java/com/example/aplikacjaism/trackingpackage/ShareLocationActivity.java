@@ -26,7 +26,6 @@ public class ShareLocationActivity extends AppCompatActivity {
     private String key;
     private String address;
     LocationManager locationManager;
-    TextView txtLat;
     FirebaseDatabase mDatabase;
     DatabaseReference mReference;
 
@@ -41,7 +40,6 @@ public class ShareLocationActivity extends AppCompatActivity {
         key = getIntent().getStringExtra("key");
         address = getIntent().getStringExtra("address");
 
-        txtLat = findViewById(R.id.lokacja);
         orderFinishButton = findViewById(R.id.orderFinishButton);
         navigateButton = findViewById(R.id.navigateButton);
 

@@ -139,7 +139,7 @@ public class PizzaListActivity extends AppCompatActivity {
                         }
                     }
                     if (admin) {
-                        menu.getItem(1).setVisible(true);
+                        menu.getItem(2).setVisible(true);
                         menu.getItem(3).setVisible(true);
                     }
                 }
@@ -164,15 +164,17 @@ public class PizzaListActivity extends AppCompatActivity {
                 startActivity(new Intent(this, SignInActivity.class));
                 return true;
             }
+            case R.id.maps: {
+                startActivity(new Intent(this, MapsActivity.class));
+                return true;
+            }
             case R.id.users: {
                 startActivity(new Intent(this, UserListActivity.class));
                 return true;
             }
-            case R.id.maps: {
-                startActivity(new Intent(this, MapsActivity.class));
-            }
             case R.id.orders: {
                 startActivity(new Intent(this, OrderListActivity.class));
+                return true;
             }
 
         }

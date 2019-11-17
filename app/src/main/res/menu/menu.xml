@@ -5,12 +5,12 @@
         android:id="@+id/logout"
         android:title="Wyloguj" />
     <item
+        android:id="@+id/maps"
+        android:title="Śledź dostawcę" />
+    <item
         android:id="@+id/users"
         android:title="Użytkownicy"
         android:visible="false" />
-    <item
-        android:id="@+id/maps"
-        android:title="Śledź dostawcę" />
     <item
         android:id="@+id/orders"
         android:title="Wybierz dostawę"
