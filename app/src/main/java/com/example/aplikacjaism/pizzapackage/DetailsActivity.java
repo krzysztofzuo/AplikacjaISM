@@ -4,11 +4,6 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,13 +12,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.bumptech.glide.Glide;
 import com.example.aplikacjaism.DataStatus;
 import com.example.aplikacjaism.FirebaseDatabaseHelper;
-import com.example.aplikacjaism.trackingpackage.LatLng;
-import com.example.aplikacjaism.trackingpackage.Order;
 import com.example.aplikacjaism.R;
+import com.example.aplikacjaism.trackingpackage.LatLng;
 import com.example.aplikacjaism.trackingpackage.MapsActivity;
+import com.example.aplikacjaism.trackingpackage.Order;
 import com.example.aplikacjaism.userpackage.SignInActivity;
 import com.example.aplikacjaism.userpackage.User;
 import com.example.aplikacjaism.userpackage.UserListActivity;

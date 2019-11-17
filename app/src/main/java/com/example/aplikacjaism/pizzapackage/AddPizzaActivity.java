@@ -5,8 +5,15 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.aplikacjaism.DataStatus;
 import com.example.aplikacjaism.FirebaseDatabaseHelper;
@@ -14,15 +21,6 @@ import com.example.aplikacjaism.R;
 import com.example.aplikacjaism.trackingpackage.Order;
 import com.example.aplikacjaism.userpackage.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.provider.MediaStore;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
